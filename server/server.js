@@ -1,15 +1,16 @@
 /* eslint no-console: 0 */
 const express = require('express');
 const https = require('https');
-const mongoose = require('mongoose');
 const app = express();
+const sequelize = require('sequelize');
 
 const ssl = require('./middleware/ssl.js');
 const config = require('./config/config');
 const api = require('./api/api');
 const auth = require('./auth/auth');
 
-// Need to connect to mySQL server
+// Connect to mySQL server
+
 
 // Middleware
 require('./middleware/middleware')(app);
