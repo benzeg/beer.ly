@@ -1,4 +1,7 @@
 'use strict';
+///////////////////////////////////
+////////WILL GO EXTINCT////////////
+///////////////////////////////////
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');

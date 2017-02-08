@@ -1,6 +1,13 @@
 'use strict';
 
-const User = require('./userModel');
+//TODO , ES6
+
+//OLD USER MODEL
+//const User = require('./userModel');
+
+//TODO: USER MODEL CONTROLLER. CHECK WITH BENZE TO SEE WHAT IS EXPORTED
+//const Customer = require('./../../../db/controllers/customerController');
+
 const jwt = require('jsonwebtoken');
 let config = require('../../config/apiKeys');
 
@@ -13,89 +20,60 @@ exports.post = (req, res, next) => {
   actions.post[req.url](req, res);
 };
 
+// /////////SESSIONS//////////// //
 
-var getUser = function(req, res) {
-  User.find({}, function(err, users) {
-    if (err) {
-      throw err; 
-    } else {
-      res.json(users);
-    }
+//called from login
+var createSession = function(req, res, newUser) {
+  return req.session.regenerate(function() {
+    req.session.user = newUser;
+    exports.sendUserData(req, res, newUser);
   });
 };
 
+var sendUserData = function(req, res, newUser) {
+  //newUser is passed in after a login
+  if (newUser) {
+    req.session.user = newUser;
+  }
+
+  var userInfo = {};
+
+  //finalize based on schema in mySQL
+  userInfo['username'] = req.session.user.username;
+  userInfo['location'] = req.session.user.location;
+  res.status(200).send(userInfo);
+  res.end();
+};
+
+//from user endpoint
+var checkUser = function(req, res) {
+  if (!req.session) {
+    res.status(401);
+    res.end();
+  } else {
+    sendUserData(req, res);
+  }
+};
+
+// /////////ACTIONS//////////// //
+
 // Register new users
 var registerUser = function(req, res) {
-  console.log('Registering user...');
-  if (!req.body.username || !req.body.password) {
-    res.json({
-      success: false,
-      message: 'Please enter username and password.'
-    });
-  } else {
-    let newUser = new User({
-      username: req.body.username,
-      password: req.body.password
-    });
-
-    // Attempt to save the user
-    newUser.save(function(err) {
-      if (err) {
-        return res.json({
-          success: false,
-          message: 'That username already exists.'
-        });
-      } else {
-        res.json({
-          success: true,
-          message: 'Successfully created new user.'
-        });
-      }
-    });
-  }
+  //TODO
 };
 
 // Authenticate the user and get a JSON Web Token to include in 
 // the header of future requests.
 var logIn = function(req, res) {
-  console.log('Logging into user...');
-  User.findOne({
-    username: req.body.username
-  }, function(err, user) {
-    if (err) {
-      throw err;
-    }; 
-
-    if (!user) {
-      res.json({
-        success: false,
-        message: 'Authentication failed. User not found.'
-      });
-    } else {
-      // Check if password is matches
-      user.comparePassword(req.body.password, function(err, isMatch) {
-        if (isMatch && !err) {
-          // Create token if the password matched and no error was thrown
-          var token = jwt.sign(user, config.beerlyAuthSecret, {
-            expiresIn: '2 days'
-          });
-          res.json({
-            success: true,
-            message: 'Authentication successful',
-            token
-          });
-        } else {
-          res.json({
-            success: false,
-            message: 'Authentication failed. Password did not match.'
-          });
-        }
-      });     
+  //send req.body to compare password function in db controller
+  //return the user if match?
+  Customer.comparePassword(req.body, function(err, user) {
+    if (user) {
+      createSession(req, res, user);
     }
   });
 };
 
-//signout, new code
 var signout = function(req, res) {
   req.session.destroy(function() {
     res.status(200);
@@ -103,15 +81,15 @@ var signout = function(req, res) {
   });
 };
 
-// Action handlers
+// ///////ACTION HANDLERS//////// //
 
 var actions = {
   get: {
-    '/': getUser,
-    '/signout/' : signout
+    '/signout/' : signout, //destroy the session
+    '/user/': checkUser
   },
   post: {
-    '/signup/': registerUser,
-    '/signin/': logIn
+    '/signup/': registerUser, //add to database
+    '/signin/': logIn //check to see if session exists. if it doesn't, check user credentials, make sure they match, then create session
   }
 };

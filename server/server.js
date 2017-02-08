@@ -9,8 +9,7 @@ const config = require('./config/config');
 const api = require('./api/api');
 const auth = require('./auth/auth');
 
-// Connect to database
-mongoose.connect(config.database.local);
+// Need to connect to mySQL server
 
 // Middleware
 require('./middleware/middleware')(app);
