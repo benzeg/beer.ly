@@ -6,15 +6,6 @@ const Auth = require('./../../../db/controllers/authController');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
 
-
-exports.get = (req, res) => {
-  actions.get[req.url](req, res);
-};
-
-exports.post = (req, res) => {
-  actions.post[req.url](req, res);
-};
-
 // /////////SESSIONS//////////// //
 
 const createSession = function(req, res, newUser) {
@@ -35,7 +26,7 @@ const sendUserData = function(req, res, newUser) {
   //finalize based on schema in mySQL
   userInfo['username'] = req.session.user.username;
   userInfo['location'] = req.session.user.location;
-  userInfo['phonenumbner'] = req.session.user.phonenumber;
+  userInfo['phonenumber'] = req.session.user.phonenumber;
   res.status(200).send(userInfo);
   res.end();
 };
@@ -52,8 +43,7 @@ const checkUser = function(req, res) {
 // /////////ACTIONS//////////// //
 
 // Register new users
-const registerUser = function(req, res) {
-  // TODO
+const registerUser = function(req, res) { 
   Auth.userSignup(req.body, function(err, user) {
     if (user) {
       createSession(req, res, user);
@@ -66,6 +56,7 @@ const registerUser = function(req, res) {
 };
 
 const logIn = function(req, res) {
+  console.log('In the login function');
   Auth.userLogin(req.body, function(err, user) {
     if (user) {
       createSession(req, res, user);
@@ -88,11 +79,21 @@ const signout = function(req, res) {
 
 const actions = {
   get: {
-    '/signout/' : signout, // destroy the session
-    '/user/': checkUser 
+    '/signout' : signout, // destroy the session
+    // '/user': checkUser,
   },
   post: {
-    '/signup/': registerUser, // add to database
-    '/signin/': logIn // check to see if session exists. if it doesn't, check user credentials, make sure they match, then create session
+    '/signup': registerUser,
+    '/signin': logIn  // add to database
   }
+};
+
+
+exports.get = (req, res, next) => {
+  console.log(req.url);
+  actions.get[req.url](req, res);
+};
+
+exports.post = (req, res, next) => {
+  actions.post[req.url](req, res);
 };
