@@ -1,0 +1,3 @@
+rootProject.name = 'mobileDelivery'
+
+include ':app'
