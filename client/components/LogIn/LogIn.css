@@ -1,0 +1,24 @@
+.home {
+    height: 100%;
+    max-width: 100%;
+    background: url(https://s3-us-west-1.amazonaws.com/beerly/beer.jpg) no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  /*justify-content: center;*/
+}
+
+.form {		
+  width: 25%;
+  margin-left: 40px;
+}
