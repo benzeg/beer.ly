@@ -1,11 +1,10 @@
 import React from 'react';
-import AutoComplete from 'material-ui/AutoComplete';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { browserHistory, Link } from 'react-router';
 import axios from 'axios';
-import _ from 'lodash';
 import styles from './Login.css';
+import user from '../../global/user.js';
 
 const inlineStyles = {
   inputStyle: {
@@ -43,10 +42,15 @@ class Login extends React.Component {
       userInformation[field] = this.formFields[field];
     }
 
-    axios.get('auth/signin', JSON.stringify(userInformation))
+    axios.post('auth/user/signin', JSON.stringify(userInformation))
       .then((response) => {
-        if (response.status === 200) {
-          browserHistory.push('/' + userInformation.location);
+        if (response.status === 200) {      
+          let user = JSON.parse(response.data);
+
+          for (let field in user) {
+            user[field] = userInformation[field];
+          }
+          browserHistory.push('/' + user.location);
         } else {
           browserHistory.push('/login');
         }

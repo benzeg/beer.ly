@@ -6,6 +6,7 @@ import { browserHistory, Link } from 'react-router';
 import axios from 'axios';
 import _ from 'lodash';
 import styles from './Signup.css';
+import user from '../../global/user.js';
 
 const CancelToken = axios.CancelToken;
 
@@ -59,7 +60,9 @@ class Signup extends React.Component {
       newUserInformation[field] = this.formFields[field];
     }
 
-    axios.post('/auth/signup', JSON.stringify(newUserInformation))
+    newUserInformation.location = this.location;
+
+    axios.post('/auth/user/signup', JSON.stringify(newUserInformation))
       .then((response) => {
         if (response.status === 200) {
           browserHistory.push('/' + newUserInformation.location);
@@ -79,6 +82,7 @@ class Signup extends React.Component {
   }
 
   handleLocationChange(inputValue) {
+    this.location = inputValue;
     this.autoComplete(inputValue);
   }
 
@@ -153,7 +157,6 @@ class Signup extends React.Component {
                 name="location"
                 dataSource={this.state.dataSource}
                 onUpdateInput={this.handleLocationChange}
-                onChange={this.handleInputFieldChange}
                 filter={() => true}
                 inputStyle={inlineStyles.inputStyle}
                 underlineFocusStyle={inlineStyles.underlineStyle}
@@ -161,7 +164,7 @@ class Signup extends React.Component {
                 fullWidth={true}
               />
             </div>
-            <RaisedButton label="Submit" style={inlineStyles.buttonStyle}/>
+            <RaisedButton label="Submit" onClick={this.handleFormSubmit} style={inlineStyles.buttonStyle}/>
             <p>Already a user? <Link to="/login">Login</Link></p>
           </div>
         </div>
