@@ -62,7 +62,8 @@ Customers.hasMany(ProductRecommendations);
 /////////////////////////////////////////////////////////////////
 
 var ProductRatings = db.define('ProductRatings', {
-  product: Sequelize.STRING
+  product: Sequelize.STRING,
+  rating: Sequelize.INTEGER
 });
 
 ProductRatings.belongsTo(Customers, { foreignKey: 'customer'});
