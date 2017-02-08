@@ -2,7 +2,7 @@ import React from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import axios from 'axios';
 import _ from 'lodash';
 import styles from './Login.css';
@@ -87,6 +87,7 @@ class Login extends React.Component {
               />
             </div>
             <RaisedButton label="Submit" style={inlineStyles.buttonStyle}/>
+            <p>New user? <Link to="/signup">Sign up</Link></p>
           </div>
         </div>
       </div>
