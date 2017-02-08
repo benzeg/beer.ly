@@ -6,6 +6,9 @@ var userSignup = function(userInput, cb) {
   var password = userInput.password;
   var phonenumber = userInput.phonenumber;
   var location = userInput.location;
+  //Search in Customers database for username
+    //If username is already taken, pass error to callback
+      //Otherwise create new database entry for user
   db.Customers.findOrCreate({where: {username: username},
   	defaults: {password: password, 
   			   phonenumber: phonenumber,
@@ -31,6 +34,10 @@ var userLogin = function(userInput, cb) {
   var username = userInput.username;
   var password = userInput.password;
 
+  //Look for user in Customers database
+    //If found, compare password using bcrypt.compare
+      //Send either error or
+        //Send newUser object with password field omitted to callback function
   db.Customers.findOne({where: {username: username}})
   .then(function(user) {
   	bcrypt.compare(password, user.password, function(err, res) {
@@ -46,6 +53,7 @@ var userLogin = function(userInput, cb) {
  	  }
   	})
   }).catch(function(err) {
+    //Send error to callback function if username is not found in the database
     cb(err);
   });
 };
