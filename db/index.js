@@ -48,7 +48,7 @@ var Deliveries = db.define('Deliveries', {
 Deliveries.belongsTo(Customers, { foreignKey: 'customer'});
 Customers.hasMany(Deliveries);
 
-Deliveries.belongsTo(Drives, { foreignKey: 'driver'});
+Deliveries.belongsTo(Drivers, { foreignKey: 'driver'});
 Drivers.hasMany(Deliveries);
 
 /////////////////////////////////////////////////////////////////
@@ -62,7 +62,12 @@ Customers.hasMany(ProductRecommendations);
 /////////////////////////////////////////////////////////////////
 
 var ProductRatings = db.define('ProductRatings', {
-  product: Sequelize.STRING,
+  productName: Sequelize.STRING,
+  productDescription: Sequelize.STRING,
+  productAbv: Sequelize.STRING,
+  productIsOrganic: Sequelize.STRING,
+  productStyleId: Sequelize.STRING,
+  productBrewery: Sequelize.STRING,
   rating: Sequelize.INTEGER
 });
 
@@ -76,9 +81,9 @@ Deliveries.sync();
 ProductRecommendations.sync();
 ProductRatings.sync();
 
-exports.Customers;
-exports.Drivers;
-exports.Transactions;
-exports.Deliveries;
-exports.ProductRecommendations;
-exports.ProductRatings;
+exports.Customers = Customers;
+exports.Drivers = Drivers;
+exports.Transactions = Transactions;
+exports.Deliveries = Deliveries;
+exports.ProductRecommendations = ProductRecommendations;
+exports.ProductRatings = ProductRatings;
