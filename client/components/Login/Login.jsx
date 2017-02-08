@@ -43,9 +43,13 @@ class Login extends React.Component {
       userInformation[field] = this.formFields[field];
     }
 
-    axios.post('signup', JSON.stringify(userInformation))
+    axios.get('auth/signin', JSON.stringify(userInformation))
       .then((response) => {
-        // redirect to main page
+        if (response.status === 200) {
+          browserHistory.push('/' + userInformation.location);
+        } else {
+          browserHistory.push('/login');
+        }
       })
       .catch((thrown) => {
         console.log('Error: ', thrown);

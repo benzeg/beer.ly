@@ -59,9 +59,13 @@ class Signup extends React.Component {
       newUserInformation[field] = this.formFields[field];
     }
 
-    axios.post('signup', JSON.stringify(newUserInformation))
+    axios.post('/auth/signup', JSON.stringify(newUserInformation))
       .then((response) => {
-        // redirect to login
+        if (response.status === 200) {
+          browserHistory.push('/' + newUserInformation.location);
+        } else {
+          browserHistory.push('/signup');
+        }
       })
       .catch((thrown) => {
         console.log('Error: ', thrown);
@@ -135,7 +139,7 @@ class Signup extends React.Component {
             <div>
               <TextField
                 floatingLabelText= "phone number"
-                name="phone"
+                name="phonenumber"
                 onChange={this.handleInputFieldChange}
                 inputStyle={inlineStyles.inputStyle}
                 underlineFocusStyle={inlineStyles.underlineStyle}
@@ -146,8 +150,10 @@ class Signup extends React.Component {
             <div>
               <AutoComplete
                 floatingLabelText="your city"
+                name="location"
                 dataSource={this.state.dataSource}
                 onUpdateInput={this.handleLocationChange}
+                onChange={this.handleInputFieldChange}
                 filter={() => true}
                 inputStyle={inlineStyles.inputStyle}
                 underlineFocusStyle={inlineStyles.underlineStyle}
