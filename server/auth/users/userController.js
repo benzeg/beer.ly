@@ -49,11 +49,11 @@ var registerUser = function(req, res) {
         res.json({
           success: true,
           message: 'Successfully created new user.'
-        })
+        });
       }
-    })
+    });
   }
-}
+};
 
 // Authenticate the user and get a JSON Web Token to include in 
 // the header of future requests.
@@ -63,8 +63,8 @@ var logIn = function(req, res) {
     username: req.body.username
   }, function(err, user) {
     if (err) {
-      throw err
-    } 
+      throw err;
+    }; 
 
     if (!user) {
       res.json({
@@ -90,20 +90,28 @@ var logIn = function(req, res) {
             message: 'Authentication failed. Password did not match.'
           });
         }
-      });      
+      });     
     }
   });
-}
+};
 
+//signout, new code
+var signout = function(req, res) {
+  req.session.destroy(function() {
+    res.status(200);
+    res.end();
+  });
+};
 
 // Action handlers
 
 var actions = {
   get: {
-    '/': getUser
+    '/': getUser,
+    '/signout/' : signout
   },
   post: {
-    '/register/': registerUser,
-    '/logIn/': logIn
+    '/signup/': registerUser,
+    '/signin/': logIn
   }
-}
+};
