@@ -45,5 +45,7 @@ var userLogin = function(userInput, cb) {
  	  	cb(null, newUser);
  	  }
   	})
+  }).catch(function(err) {
+    cb(err);
   });
 };
