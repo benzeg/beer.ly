@@ -5,6 +5,6 @@ const users = require('./users/userRoutes');
 const checkout = require('./checkout/checkoutRoutes');
 
 router.use('/checkout', checkout);
-router.use('/users', users);
+router.use('/user', users);
 
 module.exports = router;
