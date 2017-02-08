@@ -7,6 +7,8 @@ import axios from 'axios';
 import _ from 'lodash';
 import styles from './Signup.css';
 
+const CancelToken = axios.CancelToken;
+
 const inlineStyles = {
   inputStyle: {
     color: '#FFF',
@@ -32,8 +34,22 @@ class Signup extends React.Component {
 
     this.formFields = {};
 
+    this.state = {
+      dataSource: []
+    };
+
+    this.autoComplete = _.debounce(this.fetchCities, 300);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleInputFieldChange = this.handleInputFieldChange.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+  }
+
+  componentDidMount = () => {
+    this.source = CancelToken.source();
+  }
+
+  componentWillUnmount = () => {
+    this.source.cancel();
   }
 
   handleFormSubmit() {
@@ -57,6 +73,36 @@ class Signup extends React.Component {
   handleInputFieldChange(event) {
     this.formFields[event.target.name] = event.target.value;
   }
+
+  handleLocationChange(inputValue) {
+    this.autoComplete(inputValue);
+  }
+
+  fetchCities(inputValue) {
+    if (inputValue === '') {
+      this.setState({ dataSource: [] });
+      return;
+    }
+
+    const context = this;
+    axios.get('api/locations/' + inputValue, {cancelToken: this.source.token})
+      .then((response) => {
+        const cities = this.handleCitiesSuccess(response);
+        context.setState({ dataSource: cities });
+      })
+      .catch((thrown) => {
+        if (!axios.isCancel(thrown)) {
+          console.log('Error: ', thrown);
+        }
+      });
+  }
+
+  handleCitiesSuccess(response) {
+    return response.data.predictions.map((city) => {
+      return city.structured_formatting.main_text;
+    });
+  }
+
 
   render() {
     return (
@@ -98,14 +144,15 @@ class Signup extends React.Component {
               />
             </div>
             <div>
-              <TextField
-                floatingLabelText= "location"
-                name="location"
-                onChange={this.handleInputFieldChange}
+              <AutoComplete
+                floatingLabelText="your city"
+                dataSource={this.state.dataSource}
+                onUpdateInput={this.handleLocationChange}
+                filter={() => true}
                 inputStyle={inlineStyles.inputStyle}
                 underlineFocusStyle={inlineStyles.underlineStyle}
-                floatingLabelStyle={inlineStyles.floatingLabelStyle}   
-                fullWidth={true}  
+                floatingLabelStyle={inlineStyles.floatingLabelStyle}
+                fullWidth={true}
               />
             </div>
             <RaisedButton label="Submit" style={inlineStyles.buttonStyle}/>
