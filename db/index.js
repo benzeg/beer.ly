@@ -48,7 +48,7 @@ var Deliveries = db.define('Deliveries', {
 Deliveries.belongsTo(Customers, { foreignKey: 'customer'});
 Customers.hasMany(Deliveries);
 
-Deliveries.belongsTo(Drives, { foreignKey: 'driver'});
+Deliveries.belongsTo(Drivers, { foreignKey: 'driver'});
 Drivers.hasMany(Deliveries);
 
 /////////////////////////////////////////////////////////////////
