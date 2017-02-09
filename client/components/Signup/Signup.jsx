@@ -133,6 +133,7 @@ class Signup extends React.Component {
             <TextField
                 floatingLabelText= "password"
                 name="password"
+                type="password"
                 onChange={this.handleInputFieldChange}
                 inputStyle={inlineStyles.inputStyle}
                 underlineFocusStyle={inlineStyles.underlineStyle}
