@@ -23,7 +23,7 @@ class Nav extends React.Component {
             <Link to="/browse">Browse</Link>
           </h1>
           <h1>
-            <Link to="/">Ratings</Link>
+            <Link to="/ratings">Ratings</Link>
           </h1>
           <h1>
             <Link to="/">Recommendations</Link>
