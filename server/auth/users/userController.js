@@ -1,7 +1,5 @@
 'use strict';
 
-// TODO , ES6
-
 const Auth = require('./../../../db/controllers/authController');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
@@ -31,15 +29,15 @@ const sendUserData = function(req, res, newUser) {
   res.end();
 };
 
-const checkUser = function(req, res) {
+function checkUser(req, res, next) {
+  console.log('middleware');
   if (!req.session) {
     res.status(401);
     res.end();
   } else {
-    let user = req.session.user;
-    sendUserData(req, res, user);
+    next();
   }
-};
+}
 
 // /////////ACTIONS//////////// //
 
@@ -60,6 +58,7 @@ const registerUser = function(req, res) {
 const logIn = function(req, res) {
   Auth.userLogin(req.body, function(err, user) {
     if (user) {
+      console.log('got here');
       createSession(req, res, user);
     } else {
       console.log('Username and password do not match', err);
@@ -81,19 +80,20 @@ const signout = function(req, res) {
 const actions = {
   get: {
     '/signout' : signout, // destroy the session
-    '/checkUser/*': checkUser,
+    //'/ratings': checkUser
   },
   post: {
     '/signup': registerUser,
     '/signin': logIn  // add to database //check session
+    //'/ratings'
   }
 };
 
 
-exports.get = (req, res, next) => {
+exports.get = (req, res) => {
   actions.get[req.url](req, res);
 };
 
-exports.post = (req, res, next) => {
+exports.post = (req, res) => {
   actions.post[req.url](req, res);
 };

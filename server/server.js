@@ -8,6 +8,7 @@ const ssl = require('./middleware/ssl.js');
 const config = require('./config/config');
 const api = require('./api/api');
 const auth = require('./auth/auth');
+const features = require('./features/features');
 
 // Connect to mysql
 var mysql = require('mysql');
@@ -31,6 +32,9 @@ app.use('/api', api);
 
 // Authentication
 app.use('/auth', auth);
+
+// Signed-in Features
+app.use('/user', features);
 
 require('./middleware/webpack')(app, express);
 
