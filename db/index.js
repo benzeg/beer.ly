@@ -58,17 +58,9 @@ Drivers.hasMany(Deliveries);
 
 /////////////////////////////////////////////////////////////////
 
-var ProductRecommendations = db.define('ProductRecommendations', {
-  product: Sequelize.STRING
-});
-
-ProductRecommendations.belongsTo(Customers, { foreignKey: 'customer'});
-Customers.hasMany(ProductRecommendations);
-/////////////////////////////////////////////////////////////////
-
 var ProductRatings = db.define('ProductRatings', {
   productName: Sequelize.STRING,
-  productDescription: Sequelize.STRING,
+  productDescription: Sequelize.TEXT,
   productAbv: Sequelize.STRING,
   productIsOrganic: Sequelize.STRING,
   productStyleId: Sequelize.STRING,
@@ -90,5 +82,4 @@ exports.Customers = Customers;
 exports.Drivers = Drivers;
 exports.Transactions = Transactions;
 exports.Deliveries = Deliveries;
-exports.ProductRecommendations = ProductRecommendations;
 exports.ProductRatings = ProductRatings;

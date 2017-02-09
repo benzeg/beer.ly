@@ -8,9 +8,9 @@ exports.saveRating = function(userRating, cb) {
   db.Customers.findOne({where: {username: username}})
   .then(function(user) {
   	var customerId = user.id;
-  	//save rating to ProductRatings database .
-  	db.ProductRatings.findOrCreate({where: {productName: product.name, CustomerId: customerId}, 
+  	db.ProductRatings.findOrCreate({where: {productName: product.name, customer: customerId}, 
   	  defaults: {
+        productId: product.id;
         productDescription: product.description,
         productAbv: product.abv,
         productIsOrganic: product.isOrganic,
@@ -20,7 +20,11 @@ exports.saveRating = function(userRating, cb) {
   	.spread(function(rating, created) {
   		if (created === false) {
   		  rating.rating = rating;
-  		  cb(null, rating);
+        rating.save().then(function() {
+          cb(null, rating);
+        }).catch(function(err) {
+          cb(err);
+        });
   		} else {
   		  cb(null, rating);
   		}
@@ -33,10 +37,10 @@ exports.saveRating = function(userRating, cb) {
 //////////////////////////////////////////////////////////////////////
 
 exports.getRatings = function(customerName, cb) {
-  db.Customers.findOne({where: {username: username}})
+  db.Customers.findOne({where: {username: customerName}})
   .then(function(user) {
     var customerId = user.id;
-    db.ProductRatings.findAll({where: {CustomersId: customerId}})
+    db.ProductRatings.findAll({where: {CustomerId: customerId}})
     .then(function(ratings) {
       cb(null, ratings);
     }).catch(function(err) {
@@ -45,4 +49,5 @@ exports.getRatings = function(customerName, cb) {
   }).catch(function(err) {
       cb(err);
   });
-} 
+};
+
