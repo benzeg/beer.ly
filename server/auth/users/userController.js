@@ -29,12 +29,16 @@ const sendUserData = function(req, res, newUser) {
   res.end();
 };
 
+// TODO: this will eventually be implemented for login
 function checkUser(req, res, next) {
   console.log('middleware');
   if (!req.session) {
+    // if a session does not exist, this means that credentials can be checked
+    // change code below to reflect new logic
     res.status(401);
     res.end();
   } else {
+    // not next, but return a status code to say that a session already exists
     next();
   }
 }
@@ -58,7 +62,6 @@ const registerUser = function(req, res) {
 const logIn = function(req, res) {
   Auth.userLogin(req.body, function(err, user) {
     if (user) {
-      console.log('got here');
       createSession(req, res, user);
     } else {
       console.log('Username and password do not match', err);
@@ -80,12 +83,10 @@ const signout = function(req, res) {
 const actions = {
   get: {
     '/signout' : signout, // destroy the session
-    //'/ratings': checkUser
   },
   post: {
     '/signup': registerUser,
-    '/signin': logIn  // add to database //check session
-    //'/ratings'
+    '/signin': logIn  // TODO, checkUser first
   }
 };
 
