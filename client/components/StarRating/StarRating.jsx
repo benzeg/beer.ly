@@ -6,7 +6,7 @@ class StarRating extends React.Component {
     super(props);
 
     this.state = {
-      value: 0,
+      value: (props.startingValue) ? props.startingValue : 0,
       readOnly: false,
       max: 4
     };
@@ -30,7 +30,8 @@ class StarRating extends React.Component {
 }
 
 StarRating.propTypes = {
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  startingValue: PropTypes.number
 };
 
 export default StarRating;

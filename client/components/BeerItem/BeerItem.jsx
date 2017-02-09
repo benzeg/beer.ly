@@ -46,7 +46,7 @@ const BeerItem = (props) => {
       { /* Optional information handlers */ }
       { abvHandler() } { descriptionHandler() }
       <button className={styles.addButton} onClick={handleClick} >Add to Flight</button>
-      <StarRating onClick={(value) => console.log('Clicked with value: ' + value)}/>
+      <StarRating startingValue={props.beer.rating ? props.beer.rating : 0} onClick={(value) => console.log('Clicked with value: ' + value)}/>
     </div>
   );
 };
