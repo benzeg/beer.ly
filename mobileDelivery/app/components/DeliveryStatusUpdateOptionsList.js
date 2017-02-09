@@ -1,3 +1,11 @@
+///////////////////////////////////////////////////////////////////////
+// DeliveryStatusUpdateOptionsList Component
+//
+// This is a "modal" component that is used by the deliery driver
+// to update the status of a particular delivery job
+//
+///////////////////////////////////////////////////////////////////////
+
 import React from 'react';
 import { Text, Modal } from 'react-native';
 
@@ -69,14 +77,14 @@ class DeliveryStatusUpdateOptionsList extends React.Component {
   }
 }
 
+DeliveryStatusUpdateOptionsList.propTypes = {
+  onStatusUpdate: React.PropTypes.func
+};
+
 DeliveryStatusUpdateOptionsList.defaultProps = {
   onStatusUpdate: function (newStatus) {
     console.warn('DeliveryStatusUpdateOptionsList: onStatusUpdate prop not passed, new state:', newStatus);
   }
-};
-
-DeliveryStatusUpdateOptionsList.propTypes = {
-  onStatusUpdate: React.PropTypes.func
 };
 
 export default DeliveryStatusUpdateOptionsList;
