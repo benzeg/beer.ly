@@ -1,6 +1,10 @@
 import React, { PropTypes } from 'react';
+import { browserHistory } from 'react-router';
+import axios from 'axios';
 import styles from './BeerItem.css';
 import StarRating from '../StarRating/StarRating';
+
+import User from '../../global/user';
 
 const mockImages = [
   'https://s3-us-west-1.amazonaws.com/beer.ly/beers/beer1.png',
@@ -15,41 +19,79 @@ const mockImages = [
   'https://s3-us-west-1.amazonaws.com/beer.ly/beers/beer10.png'
 ];
 
-const BeerItem = (props) => {
-  const handleClick = () => {
+class BeerItem extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleRatingSubmit = this.handleRatingSubmit.bind(this);
+  }
+
+  handleClick() {
     const beer = {
-      name: props.beer.name,
-      image: mockImages[props.beer.style.id % mockImages.length]
+      name: this.props.beer.name,
+      image: mockImages[this.props.beer.style.id % mockImages.length]
     };
-    props.addToCart(beer);
-  };
+    this.props.addToCart(beer);
+  }
 
-  // Handles situation when brewery does not supply information
-  const abvHandler = () => {
-    return (props.beer.abv) ?
-      (<strong className={styles.abv}>{props.beer.abv}% ALC/VOL</strong>) :
-      (<strong className={styles.abv}>7.25% ALC/VOL</strong>);
-  };
+  handleRatingSubmit(value) {
+    console.log('Clicked with value: ' + value);
 
-  const descriptionHandler = () => {
-    return (props.beer.description) ?
-      (<p className={styles.description}>{props.beer.description.substring(0, 60)}...</p>) :
-      (<p className={styles.description}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...</p>);
-  };
+    // if (!User.username) {
+    //   browserHistory.push('/login');
+    // } else {
+    //   let ratingDetails = {
+    //     username: User.username,
+    //     rating: value,
+    //     product: this.props.beer
+    //   };
+    //   axios({
+    //     method: 'post',
+    //     url: 'user/ratings',
+    //     data: JSON.stringify(ratingDetails),
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     }
+    //   })
+    //   .then((response) => {
+    //     console.log('rating saved to database successfully');
+    //   })
+    //   .catch((thrown) => {
+    //     console.log('Error: ', thrown);
+    //     browserHistory.push('/login');
+    //   });
+    // }
+  }
 
-  return (
-    <div className={styles.cell}>
-      <div className={styles.title}>
-        {props.beer.name}
+  render() {
+    // Handles situation when brewery does not supply information
+    const abvHandler = () => {
+      return (this.props.beer.abv) ?
+        (<strong className={styles.abv}>{this.props.beer.abv}% ALC/VOL</strong>) :
+        (<strong className={styles.abv}>7.25% ALC/VOL</strong>);
+    };
+
+    const descriptionHandler = () => {
+      return (this.props.beer.description) ?
+        (<p className={styles.description}>{this.props.beer.description.substring(0, 60)}...</p>) :
+        (<p className={styles.description}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...</p>);
+    };
+
+    return (
+      <div className={styles.cell}>
+        <div className={styles.title}>
+          {this.props.beer.name}
+        </div>
+        <img src={mockImages[this.props.beer.style.id % mockImages.length]} className={styles.image} />
+        { /* Optional information handlers */ }
+        { abvHandler() } { descriptionHandler() }
+        <button className={styles.addButton} onClick={this.handleClick} >Add to Flight</button>
+        <StarRating startingValue={this.props.beer.rating ? this.props.beer.rating : 0} onClick={this.handleRatingSubmit}/>
       </div>
-      <img src={mockImages[props.beer.style.id % mockImages.length]} className={styles.image} />
-      { /* Optional information handlers */ }
-      { abvHandler() } { descriptionHandler() }
-      <button className={styles.addButton} onClick={handleClick} >Add to Flight</button>
-      <StarRating startingValue={props.beer.rating ? props.beer.rating : 0} onClick={(value) => console.log('Clicked with value: ' + value)}/>
-    </div>
-  );
-};
+    );
+  }
+}
 
 BeerItem.propTypes = {
   beer: PropTypes.object
