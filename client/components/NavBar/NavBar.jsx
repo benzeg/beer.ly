@@ -1,11 +1,30 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import axios from 'axios';
+import { Link, browserHistory } from 'react-router';
 import Cart from '../Cart/Cart';
 import styles from './NavBar.css';
+import User from '../../global/user';
 
 class Nav extends React.Component {
   constructor(props) {
     super(props);
+    this.handleSignout = this.handleSignout.bind(this);
+  }
+
+  handleSignout() {
+    axios({
+      method: 'get',
+      url: 'auth/user/signout',
+    })
+    .then((response) => {
+      for (let field in User) {
+        User[field] = undefined;
+      }
+      browserHistory.push('/login');
+    })
+    .catch((thrown) => {
+      console.log('Error: ', thrown);
+    });
   }
 
   render() {
@@ -30,6 +49,9 @@ class Nav extends React.Component {
           </h1>
           <h1>
             <Link to="/">Delivery</Link>
+          </h1>
+          <h1 onClick={this.handleSignout}>
+            Signout
           </h1>
           <ul>
             <li>
