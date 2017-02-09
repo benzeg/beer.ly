@@ -33,7 +33,7 @@ exports.saveRating = function(userRating, cb) {
 //////////////////////////////////////////////////////////////////////
 
 exports.getRatings = function(customerName, cb) {
-  db.Customers.findOne({where: {username: username}})
+  db.Customers.findOne({where: {username: customerName}})
   .then(function(user) {
     var customerId = user.id;
     db.ProductRatings.findAll({where: {CustomerId: customerId}})
