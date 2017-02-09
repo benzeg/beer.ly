@@ -30,11 +30,19 @@ exports.saveRating = function(userRating, cb) {
   });
 };
 
-// exports.displayRating = function(customerName) {
-//   db.Customers.findOne({where: {username: username}})
-//   .then(function(user) {
-//     var customerId = user.id;
-//     db.ProductRatings.findAll({where: {CustomersId: customerId}})
-//     .then(function())
-//   })
-// } 
+//////////////////////////////////////////////////////////////////////
+
+exports.getRatings = function(customerName, cb) {
+  db.Customers.findOne({where: {username: username}})
+  .then(function(user) {
+    var customerId = user.id;
+    db.ProductRatings.findAll({where: {CustomersId: customerId}})
+    .then(function(ratings) {
+      cb(null, ratings);
+    }).catch(function(err) {
+      cb(err);
+    });
+  }).catch(function(err) {
+      cb(err);
+  });
+} 
