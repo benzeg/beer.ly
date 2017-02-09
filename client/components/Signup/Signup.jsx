@@ -62,17 +62,27 @@ class Signup extends React.Component {
 
     newUserInformation.location = this.location;
 
-    axios.post('/auth/user/signup', JSON.stringify(newUserInformation))
-      .then((response) => {
-        if (response.status === 200) {
-          browserHistory.push('/' + newUserInformation.location);
-        } else {
-          browserHistory.push('/signup');
-        }
-      })
-      .catch((thrown) => {
-        console.log('Error: ', thrown);
-      });
+    axios({
+      method: 'post',
+      url: 'auth/user/signup',
+      data: JSON.stringify(newUserInformation),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        console.log(response);
+        browserHistory.push('/login');
+      } else {
+        browserHistory.push('/signup');
+      }
+    })
+    .catch((thrown) => {
+      console.log('Error: ', thrown);
+      browserHistory.push('/signup');
+    });
+
   }
 
   // Event handler to populate all values into the formFields object
@@ -93,6 +103,7 @@ class Signup extends React.Component {
     }
 
     const context = this;
+
     axios.get('api/locations/' + inputValue, {cancelToken: this.source.token})
       .then((response) => {
         const cities = this.handleCitiesSuccess(response);

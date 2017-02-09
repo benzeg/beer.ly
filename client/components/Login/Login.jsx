@@ -42,22 +42,34 @@ class Login extends React.Component {
       userInformation[field] = this.formFields[field];
     }
 
-    axios.post('auth/user/signin', JSON.stringify(userInformation))
-      .then((response) => {
-        if (response.status === 200) {      
-          let user = JSON.parse(response.data);
+    axios({
+      method: 'post',
+      url: 'auth/user/signin',
+      data: JSON.stringify(userInformation),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => {
+      console.log(response);
+      if (response.status === 200) {      
+        let data = response.data;
 
-          for (let field in user) {
-            user[field] = userInformation[field];
-          }
-          browserHistory.push('/' + user.location);
-        } else {
-          browserHistory.push('/login');
+        for (let field in data) {
+          user[field] = data[field];
         }
-      })
-      .catch((thrown) => {
-        console.log('Error: ', thrown);
-      });
+        browserHistory.push('/' + user.location);
+      } else {
+        // TODO: clear input fields
+        browserHistory.push('/login');
+      }
+    })
+    .catch((thrown) => {
+      console.log('Error: ', thrown);
+      // TODO: clear input fields
+      browserHistory.push('/login');
+    });
+
   }
 
   // Event handler to populate all values into the formFields object
@@ -87,6 +99,7 @@ class Login extends React.Component {
             <TextField
                 floatingLabelText= "password"
                 name="password"
+                type="password"
                 onChange={this.handleInputFieldChange}
                 inputStyle={inlineStyles.inputStyle}
                 underlineFocusStyle={inlineStyles.underlineStyle}
@@ -94,7 +107,7 @@ class Login extends React.Component {
                 fullWidth={true}  
               />
             </div>
-            <RaisedButton label="Submit" style={inlineStyles.buttonStyle}/>
+            <RaisedButton label="Submit" onClick={this.handleFormSubmit} style={inlineStyles.buttonStyle}/>
             <p>New user? <Link to="/signup">Sign up</Link></p>
           </div>
         </div>
