@@ -21,7 +21,11 @@ exports.saveRating = function(userRating, cb) {
   	.spread(function(rating, created) {
   		if (created === false) {
   		  rating.rating = rating;
-  		  cb(null, rating);
+        rating.save().then(function() {
+          cb(null, rating);
+        }).catch(function(err) {
+          cb(err);
+        });
   		} else {
   		  cb(null, rating);
   		}
