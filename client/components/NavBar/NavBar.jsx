@@ -20,7 +20,7 @@ class Nav extends React.Component {
             <Link to="/" className={logo}>Beer.ly</Link>
           </h1>
           <h1>
-            <Link to="/">Browse</Link>
+            <Link to="/browse">Browse</Link>
           </h1>
           <h1>
             <Link to="/">Ratings</Link>
