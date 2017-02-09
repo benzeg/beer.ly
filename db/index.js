@@ -15,7 +15,7 @@ Customers.beforeCreate(function(user, options) {
   return bcrypt.hash(user.password, null, null, function(err, hashedPw) {
     if (!err) {
       user.password = hashedPw;
-      user.save().then(function(){});
+      cb(null, options);
     } else {
       throw err;
     }
