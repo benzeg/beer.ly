@@ -45,4 +45,4 @@ exports.getRatings = function(customerName, cb) {
   }).catch(function(err) {
       cb(err);
   });
-} 
+};
