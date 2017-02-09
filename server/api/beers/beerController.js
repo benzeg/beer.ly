@@ -28,7 +28,29 @@ function fetchBeersByBreweryId(breweryID) {
   return utils.fetch(api, {});
 }
 
-//function fetchBeersByIds()
+exports.fetchBeersByIds = function(beerArray) {
+  const api = {
+    key: config.breweryDBKey,
+    url: 'http://api.brewerydb.com/v2/',
+    endPoint: 'beers'
+  };
+
+  // change array into a string to feed into ids
+  var listBeers = [];
+  var beerObj = {};
+  beerArray.forEach(function(beer) {
+    listBeers.push(beer.productId);
+    beerObj[beer.productId] = beer.rating;
+  });
+
+  listBeers = listBeers.join(',');
+
+  const queryOptions = {
+    ids: listBeers
+  };
+
+  return utils.fetch(api, queryOptions);
+};
 
 exports.get = (req, res) => {
   const name = req.params.brewery;

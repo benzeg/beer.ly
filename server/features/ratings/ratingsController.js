@@ -3,15 +3,16 @@
 const Auth = require('./../../../db/controllers/ratingsController');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
+const Beers = require('./../../../server/api/beers/beerController');
 
 const getRatings = function(req, res) {
-  Auth.getRating(req.body, function(err, data) {
+  Auth.getRatings(req.body.username, function(err, data) {
     if (err) {
       console.log('Could not retrieve ratings');
       res.status(401);
       res.end();
     } else {
-      console.log(data);
+      console.log('THIS IS THE RETURNED DATA',data);
     }
   });
 };
@@ -33,10 +34,12 @@ const addRatings = function(req, res) {
 
 const actions = {
   get: {
-    '/' : getRatings
+    //'/' : getRatings
+    //'/' : addRatings //testing only
   },
   post: {
-    '/': addRatings
+    //'/': addRatings
+    '/': getRatings
   }
 };
 
