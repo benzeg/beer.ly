@@ -1,7 +1,5 @@
 'use strict';
 
-// TODO , ES6
-
 const Auth = require('./../../../db/controllers/authController');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
@@ -31,23 +29,28 @@ const sendUserData = function(req, res, newUser) {
   res.end();
 };
 
-const checkUser = function(req, res) {
+// TODO: this will eventually be implemented for login
+function checkUser(req, res, next) {
+  console.log('middleware');
   if (!req.session) {
+    // if a session does not exist, this means that credentials can be checked
+    // change code below to reflect new logic
     res.status(401);
     res.end();
   } else {
-    sendUserData(req, res);
+    // not next, but return a status code to say that a session already exists
+    next();
   }
-};
+}
 
 // /////////ACTIONS//////////// //
 
 // Register new users
-const registerUser = function(req, res) { 
-  console.log('got to registerUser');
+const registerUser = function(req, res) {
   Auth.userSignup(req.body, function(err, user) {
     if (user) {
-      createSession(req, res, user);
+      res.status(201);
+      res.end();
     } else {
       console.log('Username is already taken');
       res.status(500);
@@ -57,7 +60,6 @@ const registerUser = function(req, res) {
 };
 
 const logIn = function(req, res) {
-  console.log('In the login function');
   Auth.userLogin(req.body, function(err, user) {
     if (user) {
       createSession(req, res, user);
@@ -81,19 +83,18 @@ const signout = function(req, res) {
 const actions = {
   get: {
     '/signout' : signout, // destroy the session
-    // '/user': checkUser,
   },
   post: {
     '/signup': registerUser,
-    '/signin': logIn  // add to database
+    '/signin': logIn  // TODO, checkUser first
   }
 };
 
 
-exports.get = (req, res, next) => {
+exports.get = (req, res) => {
   actions.get[req.url](req, res);
 };
 
-exports.post = (req, res, next) => {
+exports.post = (req, res) => {
   actions.post[req.url](req, res);
 };
