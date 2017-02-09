@@ -42,10 +42,10 @@ class Nav extends React.Component {
             <Link to="/browse">Browse</Link>
           </h1>
           <h1>
-            <Link to="/ratings">Ratings</Link>
+            <Link to="/ratings">My Ratings</Link>
           </h1>
           <h1>
-            <Link to="/">Recommendations</Link>
+            <Link to="/recommendations">Recommendations</Link>
           </h1>
           <h1>
             <Link to="/">Delivery</Link>
