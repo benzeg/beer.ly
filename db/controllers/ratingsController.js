@@ -45,4 +45,8 @@ exports.getRatings = function(customerName, cb) {
   }).catch(function(err) {
       cb(err);
   });
+<<<<<<< HEAD
 };
+=======
+} 
+>>>>>>> e8fc4f5c40d6518b45daf0e187ce2a99e26deca4
