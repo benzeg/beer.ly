@@ -8,7 +8,6 @@ exports.saveRating = function(userRating, cb) {
   db.Customers.findOne({where: {username: username}})
   .then(function(user) {
   	var customerId = user.id;
-  	//save rating to ProductRatings database
   	db.ProductRatings.findOrCreate({where: {productName: product.name, CustomerId: customerId}, 
   	  defaults: {
         productId: product.id;
@@ -16,7 +15,7 @@ exports.saveRating = function(userRating, cb) {
         productAbv: product.abv,
         productIsOrganic: product.isOrganic,
         productStyleId: product.styleId,
-        productBrewery: product.brewery,
+        productBrewery: product.name,
         rating: rating}})
   	.spread(function(rating, created) {
   		if (created === false) {
