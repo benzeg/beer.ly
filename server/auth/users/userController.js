@@ -36,18 +36,19 @@ const checkUser = function(req, res) {
     res.status(401);
     res.end();
   } else {
-    sendUserData(req, res);
+    let user = req.session.user;
+    sendUserData(req, res, user);
   }
 };
 
 // /////////ACTIONS//////////// //
 
 // Register new users
-const registerUser = function(req, res) { 
-  console.log('got to registerUser');
+const registerUser = function(req, res) {
   Auth.userSignup(req.body, function(err, user) {
     if (user) {
-      createSession(req, res, user);
+      res.status(201);
+      res.end();
     } else {
       console.log('Username is already taken');
       res.status(500);
@@ -57,7 +58,6 @@ const registerUser = function(req, res) {
 };
 
 const logIn = function(req, res) {
-  console.log('In the login function');
   Auth.userLogin(req.body, function(err, user) {
     if (user) {
       createSession(req, res, user);
@@ -81,11 +81,11 @@ const signout = function(req, res) {
 const actions = {
   get: {
     '/signout' : signout, // destroy the session
-    // '/user': checkUser,
+    '/checkUser/*': checkUser,
   },
   post: {
     '/signup': registerUser,
-    '/signin': logIn  // add to database
+    '/signin': logIn  // add to database //check session
   }
 };
 
