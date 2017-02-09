@@ -5,15 +5,15 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
 
 const getRatings = function(req, res) {
-  // Auth.getRating(req.body, function(err, data) {
-    // if (err) {
-      // console.log('Could not retrieve ratings')
-      // res.status(401);
-      // res.end();
-    // } else {
-      // reference ratings folder in api, which can refer to utils
-    // }
-  // })
+  Auth.getRating(req.body, function(err, data) {
+    if (err) {
+      console.log('Could not retrieve ratings');
+      res.status(401);
+      res.end();
+    } else {
+      console.log(data);
+    }
+  });
 };
 
 const addRatings = function(req, res) {

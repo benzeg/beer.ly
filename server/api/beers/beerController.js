@@ -28,6 +28,8 @@ function fetchBeersByBreweryId(breweryID) {
   return utils.fetch(api, {});
 }
 
+//function fetchBeersByIds()
+
 exports.get = (req, res) => {
   const name = req.params.brewery;
 
