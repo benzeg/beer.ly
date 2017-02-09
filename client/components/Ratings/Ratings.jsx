@@ -49,6 +49,7 @@ class Ratings extends React.Component {
   }
 
   handleSuccess(beers) {
+    beers.sort((a, b) => b.rating - a.rating);
     this.setState({
       beers: beers
     });
