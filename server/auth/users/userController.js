@@ -11,7 +11,7 @@ const config = require('../../config/apiKeys');
 const createSession = function(req, res, newUser) {
   return req.session.regenerate(function() {
     req.session.user = newUser;
-    exports.sendUserData(req, res, newUser);
+    sendUserData(req, res, newUser);
   });
 };
 
@@ -47,10 +47,9 @@ const registerUser = function(req, res) {
   console.log('got to registerUser');
   Auth.userSignup(req.body, function(err, user) {
     if (user) {
-      console.log('created a user');
       createSession(req, res, user);
     } else {
-      console.log('Could not signup user, server error');
+      console.log('Username is already taken');
       res.status(500);
       res.end();
     }
@@ -92,7 +91,6 @@ const actions = {
 
 
 exports.get = (req, res, next) => {
-  console.log(req.url);
   actions.get[req.url](req, res);
 };
 
