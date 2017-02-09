@@ -8,7 +8,7 @@ exports.saveRating = function(userRating, cb) {
   db.Customers.findOne({where: {username: username}})
   .then(function(user) {
   	var customerId = user.id;
-  	db.ProductRatings.findOrCreate({where: {productName: product.name, CustomerId: customerId}, 
+  	db.ProductRatings.findOrCreate({where: {productName: product.name, customer: customerId}, 
   	  defaults: {
         productId: product.id;
         productDescription: product.description,
