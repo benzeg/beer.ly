@@ -1,26 +1,8 @@
 import React from 'react';
-import { View, Text, Modal } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { Text, Modal } from 'react-native';
 
 import { ListItem } from 'react-native-material-ui';
 import { Dialog, DialogDefaultActions } from 'react-native-material-ui';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 25,
-  },
-
-  modal: {
-
-  }
-});
 
 class DeliveryStatusUpdateOptionsList extends React.Component {
   constructor(props) {
@@ -28,16 +10,14 @@ class DeliveryStatusUpdateOptionsList extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
         <Modal
           animationType="fade"
           transparent={true}
           onRequestClose={() => this.props.onStatusUpdate(null)}
-          style={styles.modal}
         >
-        
+
           <Dialog>
-            <Dialog.Title><Text>Change Job Status</Text></Dialog.Title>
+            <Dialog.Title><Text>Update Job Status</Text></Dialog.Title>
             <Dialog.Content>
               <ListItem
                 divider
@@ -49,9 +29,9 @@ class DeliveryStatusUpdateOptionsList extends React.Component {
               <ListItem
                 divider
                 centerElement={{
-                  primaryText: 'Enroute to Supply Warehouse'
+                  primaryText: 'Enroute to Warehouse'
                 }}
-                onPress={()=>this.props.onStatusUpdate('Enroute to Supply Warehouse')}
+                onPress={()=>this.props.onStatusUpdate('Enroute to Warehouse')}
               />
               <ListItem
                 divider
@@ -74,26 +54,29 @@ class DeliveryStatusUpdateOptionsList extends React.Component {
                 }}
                 onPress={()=>this.props.onStatusUpdate('Delivered to Customer')}
               />
-              
+
             </Dialog.Content>
             <Dialog.Actions>
               <DialogDefaultActions
                  actions={['Cancel']}
-                 onActionPress={text => this.props.onStatusUpdate(null)}
+                 onActionPress={() => this.props.onStatusUpdate(null)}
               />
             </Dialog.Actions>
           </Dialog>
-        
+
         </Modal>
-      </View>
     );
   }
 }
 
 DeliveryStatusUpdateOptionsList.defaultProps = {
-  onStatusUpdate: function(newStatus) {
+  onStatusUpdate: function (newStatus) {
     console.warn('DeliveryStatusUpdateOptionsList: onStatusUpdate prop not passed, new state:', newStatus);
   }
+};
+
+DeliveryStatusUpdateOptionsList.propTypes = {
+  onStatusUpdate: React.PropTypes.func
 };
 
 export default DeliveryStatusUpdateOptionsList;
