@@ -44,8 +44,10 @@ const checkUser = function(req, res) {
 
 // Register new users
 const registerUser = function(req, res) { 
+  console.log('got to registerUser');
   Auth.userSignup(req.body, function(err, user) {
     if (user) {
+      console.log('created a user');
       createSession(req, res, user);
     } else {
       console.log('Could not signup user, server error');
