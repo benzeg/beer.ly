@@ -11,6 +11,7 @@ exports.saveRating = function(userRating, cb) {
   	//save rating to ProductRatings database
   	db.ProductRatings.findOrCreate({where: {productName: product.name, CustomerId: customerId}, 
   	  defaults: {
+        productId: product.id;
         productDescription: product.description,
         productAbv: product.abv,
         productIsOrganic: product.isOrganic,
