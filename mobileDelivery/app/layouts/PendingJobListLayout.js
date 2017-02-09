@@ -1,9 +1,13 @@
 import React from 'react';
 
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { ScrollView } from 'react-native';
 
-import { Styles } from './Styles.js';
+import { Toolbar } from 'react-native-material-ui';
+
+import PendingJobItem from '../components/PendingJobItem.js';
+
+import { PendingJobTestData } from '../testdata/TestData.js';
 
 class PendingJobListLayout extends React.Component {
   constructor(props) {
@@ -12,32 +16,23 @@ class PendingJobListLayout extends React.Component {
   render() {
     return (
       <View>
+        <Toolbar centerElement="Pending Jobs" />
         <ScrollView>
-
-          <Text> Hello </Text>
+          {this.props.jobList.map(job => (<PendingJobItem key={job.id} jobInfo={job} onPress={this.props.onJobPress} />))}
         </ScrollView>
       </View>
     );
   }
 }
 
+PendingJobListLayout.propTypes = {
+  onJobPress: React.PropTypes.func,
+  jobList: React.PropTypes.array
+};
+
 PendingJobListLayout.defaultProps = {
-  jobList: [
-    {
-      id: 'testID123',
-      supplyAddresses: ['1705 Mariposa St, San Francisco', '563 2nd St, San Francisco'],
-      deliveryAddress: '555 Commercial Street, San Francisco',
-      customerName: 'bob',
-      customerPhoneNumber: '555-555-5555'
-    },
-    {
-      id: 'testID124',
-      supplyAddresses: ['563 2nd St, San Francisco', '1150 Howard St, San Francisco'],
-      deliveryAddress: '555 Commercial Street, San Francisco',
-      customerName: 'mary',
-      customerPhoneNumber: '555-555-7777'
-    }
-  ]
+  onJobPress: job => console.warn('PendingJobListLayout, no onJobPress prop defined: job object', job),
+  jobList: PendingJobTestData
 };
 
 export default PendingJobListLayout;
