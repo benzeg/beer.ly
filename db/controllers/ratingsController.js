@@ -1,6 +1,6 @@
 var db = require('../index.js');
 
-var saveRating = function(userRating, cb) {
+exports.saveRating = function(userRating, cb) {
   var username = userRating.username;
   var rating = userRating.rating;
   var product = userRating.product;
@@ -20,12 +20,21 @@ var saveRating = function(userRating, cb) {
   	.spread(function(rating, created) {
   		if (created === false) {
   		  rating.rating = rating;
-  		  cb(rating);
+  		  cb(null, rating);
   		} else {
-  		  cb(rating);
+  		  cb(null, rating);
   		}
   	});
   }).catch(function(err) {
   	cb(err);
   });
-}
+};
+
+// exports.displayRating = function(customerName) {
+//   db.Customers.findOne({where: {username: username}})
+//   .then(function(user) {
+//     var customerId = user.id;
+//     db.ProductRatings.findAll({where: {CustomersId: customerId}})
+//     .then(function())
+//   })
+// } 
