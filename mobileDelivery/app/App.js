@@ -1,17 +1,17 @@
 import React from 'react';
-import { View } from 'react-native';
 
-import { SERVER_ADDRESS } from './config/ServerConfig.js';
-import Container from './components/Container.js';
-import DeliveryStatusUpdateOptionsList from './components/DeliveryStatusUpdateOptionsList.js';
-import LocationTracker from './components/LocationTracker.js';
+import { View, Dimensions } from 'react-native';
 
 import { Toolbar } from 'react-native-material-ui';
-import { ActionButton } from 'react-native-material-ui';
-import { ListItem } from 'react-native-material-ui';
 
-import MapView from 'react-native-maps';
+import { SERVER_ADDRESS } from './config/ServerConfig.js';
 
+import PendingJobListLayout from './layouts/PendingJobListLayout.js';
+import ActiveJobDashBoardLayout from './layouts/ActiveJobDashBoardLayout.js';
+import DeliveryStatusUpdateOptionsList from './components/DeliveryStatusUpdateOptionsList.js';
+
+import Container from './components/Container.js';
+import LocationTracker from './components/LocationTracker.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,12 +22,16 @@ class App extends React.Component {
         latitude: 37.78825,
         longitude: -122.4324
       },
+
+      activeJob: null,
       deliveryStatus: 'No Job Active',
-      isSelectingUpdatedJobStatus: false
+
+      isSelectingUpdatedJobStatus: false,
+      activeLayout: 'PendingJobList'
     };
   }
 
-  handleStatusUpdate = (newStatus) => {
+  handleJobStatusUpdateSelect = (newStatus) => {
     this.setState({
       deliveryStatus: newStatus !== null ? newStatus : this.state.deliveryStatus,
       isSelectingUpdatedJobStatus: false
@@ -54,7 +58,14 @@ class App extends React.Component {
         longitude: this.state.location.longitude
       })
     })
-    .then(response => console.log('Response:', response))
+    .then((response) => {
+      if (this.state.deliveryStatus === 'Delivered to Customer') {
+        this.setState({
+          activeLayout: 'PendingJobList'
+        });
+      }
+      console.log('Response:', response);
+    })
     .catch(error=> console.log('Error:', error));
   }
 
@@ -64,58 +75,48 @@ class App extends React.Component {
     });
   }
 
+  handleJobSelect = (newJob) => {
+    this.setState({
+      activeJob: newJob,
+      deliveryStatus: 'Delivery Job Accepted',
+      activeLayout: 'ActiveJobDashBoard'
+    });
+  }
+
+  handleJobStatusUpdateClick = () => {
+    this.setState({
+      isSelectingUpdatedJobStatus: true
+    });
+  }
+
   render() {
     return (
-      <Container>
-        <Toolbar
-          leftElement="menu"
-          centerElement="Beer.ly Delivered"
-        />
-
-        {this.state.isSelectingUpdatedJobStatus &&
-          <DeliveryStatusUpdateOptionsList onStatusUpdate={this.handleStatusUpdate}/>
+      <View>
+        {this.state.activeLayout === 'PendingJobList' &&
+            <PendingJobListLayout onJobPress={this.handleJobSelect}/>
         }
 
-        <View>
-          <LocationTracker onLocationChange={this.handleLocationChange}/>
+        {this.state.activeLayout === 'ActiveJobDashBoard' &&
+          <Container>
+              <Toolbar
+                leftElement="menu"
+                centerElement="Beer.ly Delivered"/>
 
-          <MapView
-            initialRegion={{
-              latitude: this.state.location.latitude,
-              longitude: this.state.location.longitude,
-              latitudeDelta: 0.005,
-              longitudeDelta: 0.005,
-            }}
-            region={{
-              latitude: this.state.location.latitude,
-              longitude: this.state.location.longitude,
-              latitudeDelta: 0.005,
-              longitudeDelta: 0.005,
-            }}
-            style={{
-              width: null,
-              height: 400
-            }}
-          >
+            <LocationTracker onLocationChange={this.handleLocationChange}/>
 
-            <MapView.Marker
-              coordinate={{latitude: this.state.location.latitude, longitude: this.state.location.longitude}}
-              title={'title'}
-              description={'description'}
-            />
-          </MapView>
+            <ActiveJobDashBoardLayout
+              location={this.state.location}
+              deliveryStatus={this.state.deliveryStatus}
+              onJobStatusUpdateClick={this.handleJobStatusUpdateClick}/>
 
-          <ListItem
-            divider
-            centerElement={{
-              primaryText: this.state.deliveryStatus
-            }}
-            onPress={()=> this.setState({isSelectingUpdatedJobStatus: !this.state.isSelectingUpdatedJobStatus})}
-          />
-        </View>
+          </Container>
+        }
 
+        {this.state.isSelectingUpdatedJobStatus &&
+          <DeliveryStatusUpdateOptionsList onStatusUpdate={this.handleJobStatusUpdateSelect}/>
+        }
 
-      </Container>
+      </View>
     );
   }
 }
