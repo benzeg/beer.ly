@@ -11,10 +11,11 @@ var Customers = db.define('Customers', {
   location: Sequelize.STRING
 });
 
-Customers.beforeCreate(function(user, options) {
+Customers.beforeCreate(function(user, options, cb) {
   return bcrypt.hash(user.password, null, null, function(err, hashedPw) {
     if (!err) {
       user.password = hashedPw;
+      cb(null, options);
     } else {
       throw err;
     }
