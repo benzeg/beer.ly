@@ -38,3 +38,11 @@
 .link {
 
 }
+
+a:link {
+  color: #444; 
+}
+
+a:visited {
+  color: #444; 
+}

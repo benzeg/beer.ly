@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import styles from './BeerItem.css';
+import StarRating from '../StarRating/StarRating';
 
 const mockImages = [
   'https://s3-us-west-1.amazonaws.com/beer.ly/beers/beer1.png',
@@ -45,7 +46,7 @@ const BeerItem = (props) => {
       { /* Optional information handlers */ }
       { abvHandler() } { descriptionHandler() }
       <button className={styles.addButton} onClick={handleClick} >Add to Flight</button>
-
+      <StarRating onClick={(value) => console.log('Clicked with value: ' + value)}/>
     </div>
   );
 };

@@ -19,6 +19,18 @@ class Nav extends React.Component {
           <h1>
             <Link to="/" className={logo}>Beer.ly</Link>
           </h1>
+          <h1>
+            <Link to="/browse">Browse</Link>
+          </h1>
+          <h1>
+            <Link to="/">Ratings</Link>
+          </h1>
+          <h1>
+            <Link to="/">Recommendations</Link>
+          </h1>
+          <h1>
+            <Link to="/">Delivery</Link>
+          </h1>
           <ul>
             <li>
               {cart}
