@@ -12,9 +12,13 @@ var Customers = db.define('Customers', {
 });
 
 Customers.beforeCreate(function(user, options) {
- return bcrypt.hash(user.password, null, null).then(function (hashedPw) {
- 	user.password = hashedPw;
- });
+  return bcrypt.hash(user.password, null, null, function(err, hashedPw) {
+    if (!err) {
+      user.password = hashedPw;
+    } else {
+      throw err;
+    }
+  });
 });
 
 /////////////////////////////////////////////////////////////////

@@ -1,7 +1,7 @@
 var db = require('../index.js');
 var bcrypt = require('bcrypt-nodejs');
 
-var userSignup = function(userInput, cb) {
+exports.userSignup = function(userInput, cb) {
   var username = userInput.username;
   var password = userInput.password;
   var phonenumber = userInput.phonenumber;
@@ -30,7 +30,7 @@ var userSignup = function(userInput, cb) {
   });
 };
 
-var userLogin = function(userInput, cb) {
+exports.userLogin = function(userInput, cb) {
   var username = userInput.username;
   var password = userInput.password;
 
