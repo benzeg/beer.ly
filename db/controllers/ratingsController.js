@@ -9,7 +9,7 @@ exports.saveRating = function(userRating, cb) {
   .then(function(user) {
   	var customerId = user.id;
   	//save rating to ProductRatings database
-  	db.ProductRatings.findorCreate({where: {productName: product.name, CustomersId: customerId}, 
+  	db.ProductRatings.findOrCreate({where: {productName: product.name, CustomerId: customerId}, 
   	  defaults: {
         productDescription: product.description,
         productAbv: product.abv,
@@ -36,7 +36,7 @@ exports.getRatings = function(customerName, cb) {
   db.Customers.findOne({where: {username: username}})
   .then(function(user) {
     var customerId = user.id;
-    db.ProductRatings.findAll({where: {CustomersId: customerId}})
+    db.ProductRatings.findAll({where: {CustomerId: customerId}})
     .then(function(ratings) {
       cb(null, ratings);
     }).catch(function(err) {

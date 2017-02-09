@@ -68,7 +68,7 @@ Customers.hasMany(ProductRecommendations);
 
 var ProductRatings = db.define('ProductRatings', {
   productName: Sequelize.STRING,
-  productDescription: Sequelize.STRING,
+  productDescription: Sequelize.TEXT,
   productAbv: Sequelize.STRING,
   productIsOrganic: Sequelize.STRING,
   productStyleId: Sequelize.STRING,
