@@ -28,6 +28,18 @@ function fetchBeersByBreweryId(breweryID) {
   return utils.fetch(api, {});
 }
 
+
+exports.fetchBeersByStyleId = function(styleId) {
+  const api = {
+    key: config.breweryDBKey,
+    url: 'http://api.brewerydb.com/v2/',
+    endPoint: 'beers/'
+  }
+  const queryOptions = {};
+  queryOptions['styleId'] = styleId;
+  return utils.fetch(api, queryOptions);
+}
+
 exports.fetchBeersByIds = function(beerArray, cb) {
 
   const api = {
@@ -78,6 +90,7 @@ exports.fetchBeersByIds = function(beerArray, cb) {
     });
   }
 };
+
 
 exports.get = (req, res) => {
   const name = req.params.brewery;
