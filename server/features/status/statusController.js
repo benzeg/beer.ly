@@ -10,9 +10,16 @@ const getStatus = function(req, res) {
   // TODO: insert function from approp controller
 };
 
+const postJob = function(req, res) {
+
+};
+
 const actions = {
   get: {
     '/' : getStatus
+  },
+  post: {
+    '/' : postJob
   }
 };
 
