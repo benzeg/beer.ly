@@ -17,10 +17,10 @@ exports.saveRating = function(userRating, cb) {
         productStyleId: product.styleId,
         productBrewery: product.name,
         rating: rating}})
-  	.spread(function(obj, created) {
+  	.spread(function(rating, created) {
   		if (created === false) {
-  		  obj.rating = rating;
-        obj.save().then(function() {
+  		  rating.rating = rating;
+        rating.save().then(function(rating) {
           cb(null, rating);
         }).catch(function(err) {
           cb(err);
