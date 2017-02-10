@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { View, Dimensions } from 'react-native';
-
+import { View } from 'react-native';
 import { Toolbar } from 'react-native-material-ui';
 
-import { SERVER_ADDRESS } from './config/ServerConfig.js';
+import _ from 'lodash';
+
+import { SERVER_ADDRESS, USERNAME, PASSWORD } from './config/ServerConfig.js';
 
 import PendingJobListLayout from './layouts/PendingJobListLayout.js';
 import ActiveJobDashBoardLayout from './layouts/ActiveJobDashBoardLayout.js';
@@ -29,49 +30,49 @@ class App extends React.Component {
       isSelectingUpdatedJobStatus: false,
       activeLayout: 'PendingJobList'
     };
+
+    this.updateServerWithLocation = _.debounce(this.handleJobStatusUpdateSelect, 300);
   }
 
   handleJobStatusUpdateSelect = (newStatus) => {
     this.setState({
       deliveryStatus: newStatus !== null ? newStatus : this.state.deliveryStatus,
       isSelectingUpdatedJobStatus: false
-    });
-
-    const USERNAME = 'boba';
-    const PASSWORD = 'hunter2';
-    const JOBID = 'job123';
-
-    const TEST_SERVER_ADDRESS = SERVER_ADDRESS;
-
-    fetch(TEST_SERVER_ADDRESS, {
-      method: 'POST',
-      headers: {
-        'Accept': 'applications/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: USERNAME,
-        password: PASSWORD,
-        jobid: JOBID,
-        status: newStatus,
-        latitude: this.state.location.latitude,
-        longitude: this.state.location.longitude
+    },
+    () => {
+      fetch(SERVER_ADDRESS, {
+        method: 'POST',
+        headers: {
+          'Accept': 'applications/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: USERNAME,
+          password: PASSWORD,
+          jobid: this.state.activeJob.id,
+          deliveryStatus: newStatus,
+          latitude: this.state.location.latitude,
+          longitude: this.state.location.longitude
+        })
       })
-    })
-    .then((response) => {
-      if (this.state.deliveryStatus === 'Delivered to Customer') {
-        this.setState({
-          activeLayout: 'PendingJobList'
-        });
-      }
-      console.log('Response:', response);
-    })
-    .catch(error=> console.log('Error:', error));
+      .then((response) => {
+        if (this.state.deliveryStatus === 'Delivered to Customer') {
+          this.setState({
+            activeLayout: 'PendingJobList'
+          });
+        }
+        console.log('Response:', response);
+      })
+      .catch(error=> console.log('Error:', error));
+    });
   }
 
   handleLocationChange = (newLocation) => {
     this.setState({
       location: newLocation
+    },
+    () => {
+      this.updateServerWithLocation(this.state.deliveryStatus);
     });
   }
 
@@ -80,7 +81,10 @@ class App extends React.Component {
       activeJob: newJob,
       deliveryStatus: 'Delivery Job Accepted',
       activeLayout: 'ActiveJobDashBoard'
-    });
+    },
+      // We need to update the server to notify it of the job being accepted
+      () => this.handleJobStatusUpdateSelect('Delivery Job Accepted')
+    );
   }
 
   handleJobStatusUpdateClick = () => {
@@ -91,16 +95,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={{flex: 1}}>
         {this.state.activeLayout === 'PendingJobList' &&
-            <PendingJobListLayout onJobPress={this.handleJobSelect}/>
+          <PendingJobListLayout onJobPress={this.handleJobSelect}/>
         }
 
         {this.state.activeLayout === 'ActiveJobDashBoard' &&
           <Container>
-              <Toolbar
-                leftElement="menu"
-                centerElement="Beer.ly Delivered"/>
+            <Toolbar
+              leftElement="menu"
+              centerElement="Beer.ly Delivered"/>
 
             <LocationTracker onLocationChange={this.handleLocationChange}/>
 
