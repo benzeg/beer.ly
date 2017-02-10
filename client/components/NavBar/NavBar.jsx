@@ -38,26 +38,38 @@ class Nav extends React.Component {
           <h1>
             <Link to="/" className={logo}>Beer.ly</Link>
           </h1>
-          <h1>
-            <Link to="/browse">Browse</Link>
-          </h1>
-          <h1>
-            <Link to="/ratings">My Ratings</Link>
-          </h1>
-          <h1>
-            <Link to="/recommendations">Recommendations</Link>
-          </h1>
-          <h1>
-            <Link to="/">Delivery</Link>
-          </h1>
-          <h1 onClick={this.handleSignout}>
-            Signout
-          </h1>
-          <ul>
-            <li>
-              {cart}
-            </li>
-          </ul>
+          { !isHomePage ?
+            <h1>
+              <Link to="/browse" className={styles.navItem}>Browse</Link>
+            </h1>
+          : <span></span>}
+          { !isHomePage ?
+            <h1>
+              <Link to="/ratings" className={styles.navItem}>My Ratings</Link>
+            </h1>
+          : <span></span>}
+          { !isHomePage ?
+            <h1>
+              <Link to="/recommendations" className={styles.navItem}>Recommendations</Link>
+            </h1>
+          : <span></span>}
+          { !isHomePage ?
+            <h1>
+              <Link to="/" className={styles.navItem}>Delivery</Link>
+            </h1>
+          : <span></span>}
+          { !isHomePage ?
+            <h1 className={styles.navItem} onClick={this.handleSignout}>
+              Signout
+            </h1>
+          : <span></span>}
+          { !isHomePage ?
+            <ul>
+              <li>
+                {cart}
+              </li>
+            </ul>
+          : <span></span>}
         </nav>
     );
   }
