@@ -27,7 +27,7 @@ class PendingJobItem extends React.Component {
           </Text>
           <Text>
             <Text style={Styles.jobTitle}>Delivery Address: {'\n'}</Text>
-            <Text style={Styles.jotText}>{job.deliveryAddress}</Text>
+            <Text style={Styles.jobText}>{job.deliveryAddress}</Text>
           </Text>
         </View>
       </Card>
