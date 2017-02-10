@@ -45,6 +45,7 @@ key.pem
 
 # API Keys
 server/config/apiKeys.js
+mobileDelivery/app/config/APIKeys.js
 
 # OSX System Files
 .DS_Store
