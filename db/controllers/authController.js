@@ -10,8 +10,10 @@ exports.userSignup = function(userInput, cb) {
     //If username is already taken, pass error to callback
       //Otherwise create new database entry for user
   db.Customers.findOrCreate({where: {username: username},
-  	defaults: {password: password}})
-  .spread(function(driver, created) {
+  	defaults: {password: password, 
+  			   phonenumber: phonenumber,
+  			   location: location}})
+  .spread(function(user, created) {
   	if (created === false) {
   	//user already exists
   	  var error = "Username already in use";
@@ -19,9 +21,11 @@ exports.userSignup = function(userInput, cb) {
   	} else {
   	//new user created
       //create a new User object without password field to be passed to server-side
-      var newDriver = {};
-      newDriver.username = driver.username;
-  	  cb(null, newDriver);
+      var newUser = {};
+      newUser.username = user.username;
+      newUser.phonenumber = user.phonenumber;
+      newUser.location = user.location;
+  	  cb(null, newUser);
   	}
   });
 };
@@ -67,8 +71,6 @@ exports.driverLogin = function(driverInput, cb) {
     } else {
       var newDriver = {};
       newDriver.username = driver.username;
-      newDriver.phonenumber = driver.phonenumber;
-      newDriver.location = driver.location;
       cb(null, newDriver);
     }
     });
