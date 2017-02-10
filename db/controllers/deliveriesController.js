@@ -21,5 +21,5 @@ exports.saveDeliveries = function(transaction, cb) {
 };
 
 exports.updateDeliveries = function(delivery, cb) {
-
+  var orderItems = delivery.
 };
