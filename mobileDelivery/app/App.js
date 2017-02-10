@@ -10,9 +10,10 @@ import { SERVER_ADDRESS, USERNAME, PASSWORD } from './config/ServerConfig.js';
 import PendingJobListLayout from './layouts/PendingJobListLayout.js';
 import ActiveJobDashBoardLayout from './layouts/ActiveJobDashBoardLayout.js';
 import DeliveryStatusUpdateOptionsList from './components/DeliveryStatusUpdateOptionsList.js';
+import LocationTracker from './components/LocationTracker.js';
+
 
 import Container from './components/Container.js';
-import LocationTracker from './components/LocationTracker.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -61,7 +62,6 @@ class App extends React.Component {
             activeLayout: 'PendingJobList'
           });
         }
-        console.log('Response:', response);
       })
       .catch(error=> console.log('Error:', error));
     });
@@ -109,6 +109,7 @@ class App extends React.Component {
             <LocationTracker onLocationChange={this.handleLocationChange}/>
 
             <ActiveJobDashBoardLayout
+              job={this.state.activeJob}
               location={this.state.location}
               deliveryStatus={this.state.deliveryStatus}
               onJobStatusUpdateClick={this.handleJobStatusUpdateClick}/>
