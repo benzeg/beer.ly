@@ -10,7 +10,7 @@ exports.saveDeliveries = function(transaction, cb) {
   db.Customers.findOne({where: {username: customer}})
   .then(function(user) {
   	var customerId = user.id;
-  	db.Transactions.create(
+  	db.Deliveries.create(
   	{supplyAddresses: supplyAddresses,
   	 deliveryAddress: deliveryAddress,
 	 deliveryStatus: 'Not assigned',
