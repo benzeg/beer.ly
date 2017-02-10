@@ -21,6 +21,9 @@ class ActiveJobDashBoardLayout extends React.Component {
 
     this.oldLatitude = 0;
     this.oldLongitude = 0;
+
+    this.userLatitudeDelta = 0.005;
+    this.userLongitudeDelta = 0.005;
   }
 
   componentWillMount() {
@@ -66,6 +69,11 @@ class ActiveJobDashBoardLayout extends React.Component {
     });
   }
 
+  handleRegionChange = (region) => {
+    this.userLatitudeDelta = region.latitudeDelta;
+    this.userLongitudeDelta = region.longitudeDelta;
+  }
+
   render() {
     return (
       <Container>
@@ -73,16 +81,18 @@ class ActiveJobDashBoardLayout extends React.Component {
           initialRegion={{
             latitude: this.props.location.latitude,
             longitude: this.props.location.longitude,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
+            latitudeDelta: this.userLatitudeDelta,
+            longitudeDelta: this.userLongitudeDelta,
           }}
 
           region={{
             latitude: this.props.location.latitude,
             longitude: this.props.location.longitude,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
+            latitudeDelta: this.userLatitudeDelta,
+            longitudeDelta: this.userLongitudeDelta,
           }}
+
+          onRegionChange={this.handleRegionChange}
 
           style={{
             width: Dimensions.get('window').width,
