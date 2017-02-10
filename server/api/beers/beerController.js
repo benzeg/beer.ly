@@ -29,6 +29,7 @@ function fetchBeersByBreweryId(breweryID) {
 }
 
 exports.fetchBeersByIds = function(beerArray, cb) {
+  console.log('AT LINE 32');
   const api = {
     key: config.breweryDBKey,
     url: 'http://api.brewerydb.com/v2/',
@@ -41,13 +42,15 @@ exports.fetchBeersByIds = function(beerArray, cb) {
   let beerObj = {};
 
   let createStringCount = 0;
+
   beerArray.forEach(function(beer) {
     listBeers.push(beer.productId);
     beerObj[beer.productId] = beer.rating;
     createStringCount++;
   });
 
-  if (createStringCount === beerArray.length - 1) {
+  console.log('string count', createStringCount);
+  if (createStringCount === beerArray.length) {
     // create string
     listBeers = listBeers.join(',');
 
@@ -55,20 +58,24 @@ exports.fetchBeersByIds = function(beerArray, cb) {
       ids: listBeers
     };
 
-    return utils.fetch(api, queryOptions, function(err, data) {
+    console.log('LINE 59');
+    console.log(listBeers);
+    utils.fetchBeer(api, queryOptions, function(err, data) {
+      console.log('GOT TO LINE 64');
       if (err) {
         console.log('Problem accessing beer api', err);
         cb(err);
       } else {
+        console.log('I AM HERE ABOUT TO RETURN SOMETHING', data);
         let decoratedBeerObj = [];
         let dataCount = 0;
-        data.data.forEach(function(pureBeerObj) {
+        data.data.data.forEach(function(pureBeerObj) {
           let newObj = pureBeerObj;
           newObj['rating'] = beerObj[pureBeerObj.id];
           decoratedBeerObj.push(newObj);
           dataCount++;
         });
-        if (dataCount === data.data.length - 1) {
+        if (dataCount === data.data.data.length) {
           cb(null, decoratedBeerObj);
         }
       }

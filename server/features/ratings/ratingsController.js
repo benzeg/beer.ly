@@ -8,15 +8,17 @@ const Beers = require('./../../../server/api/beers/beerController');
 const getRatings = function(req, res) {
   Auth.getRatings(req.body.username, function(err, data) {
     if (err) {
+      console.log('this is another errror', err);
       console.log('Could not retrieve ratings');
       res.status(401);
       res.end();
     } else {
       console.log('BEFORE CALL BEER CONTROLLER');
-      Beers.fetchBeersByBreweryId(data, function(err, beerObj) {
+      Beers.fetchBeersByIds(data, function(err, beerObj) {
         if (err) {
           console.log('Not able to return beer array of objects', err);
         } else {
+          console.log('THIS IS THE BEER OBJ', beerObj);
           res.status(200).send(beerObj);
           res.end();      
         }
@@ -42,12 +44,10 @@ const addRatings = function(req, res) {
 
 const actions = {
   get: {
-    //'/' : getRatings
-    // '/' : addRatings
+    '/' : getRatings
   },
   post: {
     '/': addRatings
-    // '/': getRatings //testing only
   }
 };
 

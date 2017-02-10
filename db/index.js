@@ -76,8 +76,8 @@ Customers.sync();
 Drivers.sync();
 Transactions.sync();
 Deliveries.sync();
-
 ProductRatings.sync();
+
 exports.Customers = Customers;
 exports.Drivers = Drivers;
 exports.Transactions = Transactions;
