@@ -9,6 +9,7 @@ const config = require('./config/config');
 const api = require('./api/api');
 const auth = require('./auth/auth');
 const features = require('./features/features');
+// const drivers = require('./drivers/drivers');
 
 // Connect to mysql
 var mysql = require('mysql');
@@ -33,8 +34,11 @@ app.use('/api', api);
 // Authentication
 app.use('/auth', auth);
 
-// Signed-in Features
+// User Signed-In Features
 app.use('/user', features);
+
+// Driver Features
+// app.use('/driver', drivers);
 
 require('./middleware/webpack')(app, express);
 
