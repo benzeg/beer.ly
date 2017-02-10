@@ -25,27 +25,26 @@ class Ratings extends React.Component {
   fetchBeersWithRatings() {
     const context = this;
 
-    // use dummy data for testing
-    context.handleSuccess(fakedata);
+    // // use dummy data for testing
+    // context.handleSuccess(fakedata);
 
-    // if (!User.username) {
-    //   browserHistory.push('/login');
-    // } else {
-    //   axios({
-    //     method: 'get',
-    //     url: 'user/ratings',
-    //     data: JSON.stringify({username: User.username}),
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }
-    //   })
-    //   .then((response) => {
-    //     context.handleSuccess(response.data);
-    //   })
-    //   .catch((thrown) => {
-    //     context.handleError(thrown);
-    //   });
-    // }
+    if (!User.username) {
+      browserHistory.push('/login');
+    } else {
+      axios({
+        method: 'get',
+        url: 'user/ratings',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        context.handleSuccess(response.data);
+      })
+      .catch((thrown) => {
+        context.handleError(thrown);
+      });
+    }
   }
 
   handleSuccess(beers) {

@@ -38,30 +38,30 @@ class BeerItem extends React.Component {
   handleRatingSubmit(value) {
     console.log('Clicked with value: ' + value);
 
-    // if (!User.username) {
-    //   browserHistory.push('/login');
-    // } else {
-    //   let ratingDetails = {
-    //     username: User.username,
-    //     rating: value,
-    //     product: this.props.beer
-    //   };
-    //   axios({
-    //     method: 'post',
-    //     url: 'user/ratings',
-    //     data: JSON.stringify(ratingDetails),
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }
-    //   })
-    //   .then((response) => {
-    //     console.log('rating saved to database successfully');
-    //   })
-    //   .catch((thrown) => {
-    //     console.log('Error: ', thrown);
-    //     browserHistory.push('/login');
-    //   });
-    // }
+    if (!User.username) {
+      browserHistory.push('/login');
+    } else {
+      let ratingDetails = {
+        username: User.username,
+        rating: value,
+        product: this.props.beer
+      };
+      axios({
+        method: 'post',
+        url: '/user/ratings',
+        data: JSON.stringify(ratingDetails),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        console.log('rating saved to database successfully');
+      })
+      .catch((thrown) => {
+        console.log('Error: ', thrown);
+        browserHistory.push('/login');
+      });
+    }
   }
 
   render() {
