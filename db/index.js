@@ -59,6 +59,7 @@ Drivers.hasMany(Deliveries);
 /////////////////////////////////////////////////////////////////
 
 var ProductRatings = db.define('ProductRatings', {
+  productId: Sequelize.STRING,
   productName: Sequelize.STRING,
   productDescription: Sequelize.TEXT,
   productAbv: Sequelize.STRING,
@@ -75,9 +76,7 @@ Customers.sync();
 Drivers.sync();
 Transactions.sync();
 Deliveries.sync();
-ProductRecommendations.sync();
 ProductRatings.sync();
-
 exports.Customers = Customers;
 exports.Drivers = Drivers;
 exports.Transactions = Transactions;

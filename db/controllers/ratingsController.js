@@ -10,7 +10,7 @@ exports.saveRating = function(userRating, cb) {
   	var customerId = user.id;
   	db.ProductRatings.findOrCreate({where: {productName: product.name, customer: customerId}, 
   	  defaults: {
-        productId: product.id;
+        productId: product.id,
         productDescription: product.description,
         productAbv: product.abv,
         productIsOrganic: product.isOrganic,
