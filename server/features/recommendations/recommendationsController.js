@@ -21,6 +21,7 @@ const getRecommendation = function(req, res) {
 
 const actions = {
   //post for testing
+  //change to get later
   post: {
     '/' : getRecommendation
   }
