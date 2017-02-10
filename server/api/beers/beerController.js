@@ -25,7 +25,7 @@ function fetchBeersByBreweryId(breweryID) {
     endPoint: `brewery/${breweryID}/beers/`
   };
 
-  return utils.fetch(api, {});
+  return utils.fetch(api, breweryID);
 }
 
 

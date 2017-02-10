@@ -20,9 +20,21 @@ const createUrl = (api, queryOptions) => {
 };
 
 exports.fetch = (api, queryOptions) => {
-  const url = createUrl(api, queryOptions);
+  let decorator = false;
+  let id;
+  let url;
+  if (typeof queryOptions === 'string') {
+    decorator = true;
+    id = queryOptions;
+    url = createUrl(api, {});
+  } else {
+    url = createUrl(api, queryOptions);
+  }
   return axios.get(url)
     .then((response) => {
+      if (decorator) {
+        response.data.breweries = id;
+      }
       return response.data;
     })
     .catch((error) => {

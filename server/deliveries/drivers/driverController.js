@@ -16,6 +16,20 @@ const getDeliveries = function(req, res) {
       // res.end();
     // }
   // });
+  let fakeData = [
+  { jobid: 'testID123',
+    supplyAddresses: ['1705 Mariposa St, San Francisco', '563 2nd St, San Francisco'],
+    deliveryAddress: '555 Commercial Street, San Francisco',
+    customerName: 'bob',
+    customerPhoneNumber: '555-555-5555'},
+  { jobid: 'testID124',
+    supplyAddresses: ['563 2nd St, San Francisco', '1150 Howard St, San Francisco'],
+    deliveryAddress: '555 Commercial Street, San Francisco',
+    customerName: 'mary',
+    customerPhoneNumber: '555-555-7777'}];
+
+  res.status(200).send(fakeData);
+  res.end();
 };
 
 const postStatus = function(req, res) {
