@@ -8,6 +8,7 @@ import MapView from 'react-native-maps';
 import Container from '../components/Container.js';
 
 import { SERVER_ADDRESS, USERNAME, PASSWORD } from '../config/ServerConfig.js';
+import { GOOGLEMAP_APIKEY } from '../config/APIKeys.js';
 import PolylineDecoder from '../lib/PolylineDecoder.js';
 
 class ActiveJobDashBoardLayout extends React.Component {
@@ -40,10 +41,10 @@ class ActiveJobDashBoardLayout extends React.Component {
 
     // Construct the Google Direction API request with query string
     const directionRequestURL = 'https://maps.googleapis.com/maps/api/directions/json?' +
-       'origin=' + this.props.location.latitude.toFixed(4) + ',' + this.props.location.longitude.toFixed(4) +
+       'origin=' + this.props.location.latitude.toFixed(7) + ',' + this.props.location.longitude.toFixed(7) +
        '&destination=' + this.props.job.deliveryAddress +
        '&waypoints=optimize:true|' + this.props.job.supplyAddresses.join('|') +
-       '&key=AIzaSyBvksqXve801sMkha2K6zdd8oGqXd_fhjk';
+       '&key=' + GOOGLEMAP_APIKEY;
 
     // Starting the call
     axios({
