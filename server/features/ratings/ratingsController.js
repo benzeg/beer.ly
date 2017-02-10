@@ -43,11 +43,11 @@ const addRatings = function(req, res) {
 const actions = {
   get: {
     //'/' : getRatings
-    //'/' : addRatings //testing only
+    // '/' : addRatings
   },
   post: {
-    //'/': addRatings
-    '/': getRatings
+    '/': addRatings
+    // '/': getRatings //testing only
   }
 };
 
