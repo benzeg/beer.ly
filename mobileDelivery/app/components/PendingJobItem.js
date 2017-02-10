@@ -19,7 +19,7 @@ class PendingJobItem extends React.Component {
         <View style={{padding: 10}}> 
           <Text>
             <Text style={Styles.jobTitle}>Job ID:</Text>
-            <Text style={Styles.jobText}> {job.id}</Text>
+            <Text style={Styles.jobText}> {job.jobid}</Text>
           </Text>
           <Text>
               <Text style={Styles.jobTitle}>Warehouses: {'\n'}</Text>
