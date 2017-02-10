@@ -18,7 +18,7 @@ class PendingJobListLayout extends React.Component {
       <View>
         <Toolbar centerElement="Pending Jobs" />
         <ScrollView>
-          {this.props.jobList.map(job => (<PendingJobItem key={job.id} jobInfo={job} onPress={this.props.onJobPress} />))}
+          {this.props.jobList.map(job => (<PendingJobItem key={job.jobid} jobInfo={job} onPress={this.props.onJobPress} />))}
         </ScrollView>
       </View>
     );
