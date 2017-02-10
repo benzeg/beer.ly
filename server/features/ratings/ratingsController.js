@@ -1,12 +1,12 @@
 'use strict';
 
-const Auth = require('./../../../db/controllers/ratingsController');
+const Ratings = require('./../../../db/controllers/ratingsController');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
 const Beers = require('./../../../server/api/beers/beerController');
 
 const getRatings = function(req, res) {
-  Auth.getRatings(req.session.user.username, function(err, data) {
+  Ratings.getRatings(req.session.user.username, function(err, data) {
     if (err) {
       console.log('Could not retrieve ratings', err);
       res.status(401);
@@ -17,7 +17,7 @@ const getRatings = function(req, res) {
           console.log('Not able to return beer array of objects', err);
         } else {
           res.status(200).send(beerObj);
-          res.end();      
+          res.end();   
         }
       });
     }
@@ -25,12 +25,12 @@ const getRatings = function(req, res) {
 };
 
 const addRatings = function(req, res) {
-  Auth.saveRating(req.body, function(err, rating) {
+  Ratings.saveRating(req.body, function(err, rating) {
     if (rating) {
       res.status(201);
       res.end();
     } else {
-      console.log('Could not save rating');
+      console.log('Could not save rating', err);
       res.status(500);
       res.end();
     }

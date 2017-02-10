@@ -1,7 +1,7 @@
 'use strict';
 
 const router = require('express').Router();
-//const drivers = require('./drivers/driverRoutes');
+const drivers = require('./drivers/driverRoutes');
 
 // Middleware authentication
 // router.use(function checkPassword(req, res, next) {

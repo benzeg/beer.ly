@@ -1,11 +1,10 @@
 'use strict';
 
 const router = require('express').Router();
-const driver = require('./driverController');
+const status = require('./statusController');
 
 router.route('/*')
-  .get(driver.get)
-  .post(driver.post);
-
+  .get(status.get)
+  .post(status.post);
 
 module.exports = router;

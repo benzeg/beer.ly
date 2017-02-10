@@ -14,7 +14,7 @@ exports.saveDeliveries = function(transaction, cb) {
 	 deliveryStatus: 'N',
 	 deliveryTime: null})
 	.then(function() {
-		cb(null, );
+		cb(null);
 	}).catch(function(err) {
 		cb(err);
 	})
