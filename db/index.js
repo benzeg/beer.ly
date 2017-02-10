@@ -59,6 +59,7 @@ Drivers.hasMany(Deliveries);
 /////////////////////////////////////////////////////////////////
 
 var ProductRatings = db.define('ProductRatings', {
+  productId: Sequelize.STRING,
   productName: Sequelize.STRING,
   productDescription: Sequelize.TEXT,
   productAbv: Sequelize.STRING,
