@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 import React from 'react';
-import {Text} from 'react-native';
+import { View, Text } from 'react-native';
 
 class GeoLocationTracker extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class GeoLocationTracker extends React.Component {
     this.state = {
       latitude: 0,
       longitude: 0
-    }
+    };
 
     // watchID is returned from geolocation.watchPosition
     // we need to keep it to "un-track" when the component unmounts
@@ -29,7 +29,8 @@ class GeoLocationTracker extends React.Component {
 
     // Start tracking our geolocation
     this.watchID = navigator.geolocation.watchPosition(this.handlePositionUpdate, this.handlePositionUpdateFail, {
-      enableHighAccuracy: true
+      enableHighAccuracy: true,
+      maximumAge: 0
     });
   }
 
@@ -38,19 +39,19 @@ class GeoLocationTracker extends React.Component {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
+  // handler for when the system provide the application with
+  // new GPS location
   handlePositionUpdate = (newPosition) => {
-    // console.warn('handlePositionUpdate', newPosition.coords);
-    this.setState({
+    const newCoordinates = {
       latitude: newPosition.coords.latitude,
       longitude: newPosition.coords.longitude
-    })
+    };
+
+    this.setState(newCoordinates);
 
     // call any event handler passed by the parent components
     if (this.props.onLocationChange) {
-      this.props.onLocationChange({
-        latitude: newPosition.coords.latitude,
-        longitude: newPosition.coords.longitude
-      });
+      this.props.onLocationChange(newCoordinates);
     }
   }
 
@@ -60,9 +61,15 @@ class GeoLocationTracker extends React.Component {
 
   render() {
     return (
-      <Text> Lat: {this.state.latitude.toFixed(4)} Long: {this.state.longitude.toFixed(4)} </Text>
+      <View>
+        <Text> Lat: {this.state.latitude.toFixed(4)} Long: {this.state.longitude.toFixed(4)} </Text>
+      </View>
     );
   }
 }
+
+GeoLocationTracker.propTypes = {
+  onLocationChange: React.PropTypes.func
+};
 
 export default GeoLocationTracker;
