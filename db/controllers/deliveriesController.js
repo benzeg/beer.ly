@@ -7,7 +7,7 @@ exports.saveDeliveries = function(transaction, cb) {
   var deliveryAddress = transaction.deliveryAddress;
   var driverId = 1;
 
-  db.Customers.findOne({where: {username: username}})
+  db.Customers.findOne({where: {username: customer}})
   .then(function(user) {
   	var customerId = user.id;
   	db.Transactions.create(
