@@ -45,3 +45,61 @@ key.pem
 
 # API Keys
 server/config/apiKeys.js
+
+# OSX System Files
+.DS_Store
+
+############
+# Mobile App
+############
+
+# Xcode
+#
+mobileDelivery/build/
+mobileDelivery/*.pbxuser
+mobileDelivery/!default.pbxuser
+mobileDelivery/*.mode1v3
+mobileDelivery/!default.mode1v3
+mobileDelivery/*.mode2v3
+mobileDelivery/!default.mode2v3
+mobileDelivery/*.perspectivev3
+mobileDelivery/!default.perspectivev3
+mobileDelivery/xcuserdata
+mobileDelivery/*.xccheckout
+mobileDelivery/*.moved-aside
+mobileDelivery/DerivedData
+mobileDelivery/*.hmap
+mobileDelivery/*.ipa
+mobileDelivery/*.xcuserstate
+mobileDelivery/project.xcworkspace
+
+# Android/IntelliJ
+#
+mobileDelivery/build/
+mobileDelivery/.idea
+mobileDelivery/.gradle
+mobileDelivery/local.properties
+mobileDelivery/*.iml
+
+# node.js
+#
+mobileDelivery/node_modules/
+mobileDelivery/npm-debug.log
+mobileDelivery/yarn-error.log
+
+# BUCK
+mobileDelivery/buck-out/
+mobileDelivery/\.buckd/
+mobileDelivery/android/app/libs
+mobileDelivery/*.keystore
+
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md
+
+mobileDelivery/fastlane/report.xml
+mobileDelivery/fastlane/Preview.html
+mobileDelivery/fastlane/screenshots
