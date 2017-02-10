@@ -2,20 +2,20 @@ var Ratings = require('./../../db/controllers/ratingsController.js');
 var beerController = require('./../api/beers/beerController.js');
 
 exports.getRecommendedStyleIds = function(customer, cb) {
-  Ratings.getRatings(customer, function (err, ratings) {
+  Ratings.getRatings(customer, function(err, ratings) {
   	if (err) {
       cb(err);
   	} else {
   	  var ratingsObj = {};
   	  ratings.forEach(function(rating) {
   	  	var styleId = rating.productStyleId;
-  	  	if (ratingsObj[styleId] === null) {
-  	  		ratingsObj[styleId] = {average:0, setNum:0};
+  	  	if (!ratingsObj[styleId]) {
+  	  		ratingsObj[styleId] = {average: 0, setNum: 0};
   	  	};
-  	  	var sum = ratingsObj[styleId].average * setNum;
+  	  	var sum = ratingsObj[styleId].average * ratingsObj[styleId].setNum;
   	  	sum += rating.rating;
-  	  	setNum += 1;
-  	  	ratingsObj[styleId].average = sum / setNum;
+  	  	ratingsObj[styleId].setNum += 1;
+  	  	ratingsObj[styleId].average = sum / ratingsObj[styleId].setNum;
   	  });
 
   	  var recommendedStyleIds = [];
@@ -25,12 +25,14 @@ exports.getRecommendedStyleIds = function(customer, cb) {
   	  		recommendedStyleIds.push(styleId);
   	  	}
   	  }
+      console.log('LINE 28 IN GETRECOMMEND');
   	  return exports.getRecommendedProducts(recommendedStyleIds, cb);
   	}
   });
 };
 
 exports.getRecommendedProducts = function(styleIdArray, cb) {
+  console.log('LINE 35 IN GETRECOMMENDPRODUCTS');
   var beerArray = [];
   styleIdArray.forEach(function(styleId) {
   	beerController.fetchBeersByStyleId(styleId)
@@ -40,11 +42,12 @@ exports.getRecommendedProducts = function(styleIdArray, cb) {
   	  cb(null, beerArray);
   	}).catch(function(err) {
   	  cb(err);
-  	})
-  })
-}
+  	});
+  });
+};
 
 exports.randomize = function(beerArray) {
+  console.log('LINE 50 IN RANDOMIZE');
   var counter = 0;
   var newbeerArray = [];
   var newbeerCheck = {};
@@ -59,4 +62,4 @@ exports.randomize = function(beerArray) {
   	counter += 1;
   }
   return newbeerArray;
-}
+};

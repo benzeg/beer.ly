@@ -6,7 +6,8 @@ const config = require('../../config/apiKeys');
 
 
 const getRecommendation = function(req, res) {
-  Recommendations.getRecommendedStyleIds(req.session.user, function(err, recommendArray) {
+  //use this for the real thing: req.session.user.username
+  Recommendations.getRecommendedStyleIds(req.body.username, function(err, recommendArray) {
     if (err) {
       console.log('Could not get user recommendations', err);
     } else {
@@ -19,7 +20,8 @@ const getRecommendation = function(req, res) {
 // ///////ACTION HANDLERS//////// //
 
 const actions = {
-  get: {
+  //post for testing
+  post: {
     '/' : getRecommendation
   }
 };
