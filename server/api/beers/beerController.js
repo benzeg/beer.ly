@@ -37,6 +37,7 @@ exports.fetchBeersByStyleId = function(styleId) {
   }
   const queryOptions = {};
   queryOptions['styleId'] = styleId;
+  queryOptions['withBreweries'] = 'Y';
   return utils.fetch(api, queryOptions);
 }
 
