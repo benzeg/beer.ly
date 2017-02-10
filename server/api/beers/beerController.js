@@ -28,7 +28,56 @@ function fetchBeersByBreweryId(breweryID) {
   return utils.fetch(api, {});
 }
 
-//function fetchBeersByIds()
+exports.fetchBeersByIds = function(beerArray, cb) {
+
+  const api = {
+    key: config.breweryDBKey,
+    url: 'http://api.brewerydb.com/v2/',
+    endPoint: 'beers'
+  };
+
+  // change array into a string to feed into ids
+  let listBeers = [];
+
+  // save object of beers containing ratings based on ids
+  let beerObj = {};
+
+  let createStringCount = 0;
+
+  beerArray.forEach(function(beer) {
+    listBeers.push(beer.productId);
+    beerObj[beer.productId] = beer.rating;
+    createStringCount++;
+  });
+
+  if (createStringCount === beerArray.length) {
+    // create string
+    listBeers = listBeers.join(',');
+
+    const queryOptions = {
+      ids: listBeers
+    };
+
+    utils.fetchBeer(api, queryOptions, function(err, data) {
+      if (err) {
+        console.log('Problem accessing beer api', err);
+        cb(err);
+      } else {
+        let decoratedBeerObj = [];
+        let dataCount = 0;
+        data.data.data.forEach(function(pureBeerObj) {
+          let newObj = pureBeerObj;
+          newObj['rating'] = beerObj[pureBeerObj.id];
+          decoratedBeerObj.push(newObj);
+          dataCount++;
+        });
+        if (dataCount === data.data.data.length) {
+          cb(null, decoratedBeerObj);
+        }
+      }
+    });
+  }
+};
 
 exports.get = (req, res) => {
   const name = req.params.brewery;
