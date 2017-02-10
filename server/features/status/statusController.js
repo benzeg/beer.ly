@@ -1,13 +1,13 @@
 'use strict';
 
-const Status = require('./../../../db/controllers/ratingsController');
+//const Status = require('./../../../db/controllers/ratingsController');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
 
 // ///////ACTION HANDLERS//////// //
 
 const getStatus = function(req, res) {
-  
+  // TODO: insert function from approp controller
 };
 
 const actions = {

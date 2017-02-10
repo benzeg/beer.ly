@@ -1,14 +1,22 @@
 'use strict';
 
-const Recommendations = require('./../../../db/controllers/ratingsController');
+const Recommendations = require('./../../middleware/recommendations');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
 
-// ///////ACTION HANDLERS//////// //
 
 const getRecommendation = function(req, res) {
-
+  Recommendations.getRecommendedStyleIds(req.session.user, function(err, recommendArray) {
+    if (err) {
+      console.log('Could not get user recommendations', err);
+    } else {
+      res.status(200).send(recommendArray);
+      res.end();
+    }
+  });
 };
+
+// ///////ACTION HANDLERS//////// //
 
 const actions = {
   get: {
