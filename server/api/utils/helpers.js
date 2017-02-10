@@ -31,7 +31,6 @@ exports.fetch = (api, queryOptions) => {
 };
 
 exports.fetchBeer = (api, queryOptions, cb) => {
-  console.log('GOT TO FETCHBEER LINE 34');
   const url = createUrl(api, queryOptions);
   console.log('THIS IS THE URL THAT SENT', url);
   axios.get(url)

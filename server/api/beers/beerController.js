@@ -34,11 +34,12 @@ exports.fetchBeersByStyleId = function(styleId) {
     key: config.breweryDBKey,
     url: 'http://api.brewerydb.com/v2/',
     endPoint: 'beers/'
-  }
+  };
   const queryOptions = {};
   queryOptions['styleId'] = styleId;
+  queryOptions['withBreweries'] = 'Y';
   return utils.fetch(api, queryOptions);
-}
+};
 
 exports.fetchBeersByIds = function(beerArray, cb) {
 
@@ -67,7 +68,8 @@ exports.fetchBeersByIds = function(beerArray, cb) {
     listBeers = listBeers.join(',');
 
     const queryOptions = {
-      ids: listBeers
+      ids: listBeers,
+      withBreweries: 'Y'
     };
 
     utils.fetchBeer(api, queryOptions, function(err, data) {
