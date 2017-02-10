@@ -10,7 +10,7 @@ exports.getRecommendedStyleIds = function(customer, cb) {
   	  ratings.forEach(function(rating) {
   	  	var styleId = rating.productStyleId;
   	  	if (!ratingsObj[styleId]) {
-  	  		ratingsObj[styleId] = {average: 0, setNum: 0};
+  	  		ratingsObj[styleId] = {average:0, setNum:0};
   	  	};
   	  	var sum = ratingsObj[styleId].average * ratingsObj[styleId].setNum;
   	  	sum += rating.rating;
@@ -31,16 +31,27 @@ exports.getRecommendedStyleIds = function(customer, cb) {
 };
 
 exports.getRecommendedProducts = function(styleIdArray, cb) {
+  //initialize empty beer array
   var beerArray = [];
+  var counter = 0;
+  var size = styleIdArray.length;
+  //for each styleId in array of styles,
+    //make api call to BreweryDB to obtain list of beers pertaining to each styleId
   styleIdArray.forEach(function(styleId) {
   	beerController.fetchBeersByStyleId(styleId)
   	.then(function(response) {
-  	  var beerArray = response.data;
-  	  beerArray = exports.randomize(beerArray);
-  	  cb(null, beerArray);
+  	  var newbeerArray = response.data;
+  	  //extract 5 random beers from response
+  	    //concat to beerArray
+  	  newbeerArray = exports.randomize(newbeerArray);
+  	  beerArray = beerArray.concat(newbeerArray);
+  	  counter++;
+  	  if (counter === size) {
+  	  	cb(null, beerArray);
+  	  }
   	}).catch(function(err) {
   	  cb(err);
-  	});
+  	})
   });
 };
 
