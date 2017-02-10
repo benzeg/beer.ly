@@ -1,0 +1,17 @@
+.wrapper {
+  width: 80%;
+  margin: auto;
+  position: relative;
+  top: 100px;
+  /*border: 1px solid red;*/
+}
+
+.title {
+  margin-bottom: 40px;
+  line-height: .8em;
+}
+
+.details {
+  font-size: 1em;
+  margin: 0;
+}
