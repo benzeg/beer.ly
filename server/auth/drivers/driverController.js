@@ -1,3 +1,5 @@
+// This route is reserved for official driver authentication
+
 'use strict';
 
 const Auth = require('./../../../db/controllers/authController');

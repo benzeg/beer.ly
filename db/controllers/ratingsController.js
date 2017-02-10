@@ -17,10 +17,10 @@ exports.saveRating = function(userRating, cb) {
         productStyleId: product.styleId,
         productBrewery: product.name,
         rating: rating}})
-  	.spread(function(rating, created) {
+  	.spread(function(obj, created) {
   		if (created === false) {
-  		  rating.rating = rating;
-        rating.save().then(function() {
+  		  obj.rating = rating;
+        obj.save().then(function() {
           cb(null, rating);
         }).catch(function(err) {
           cb(err);
@@ -37,16 +37,20 @@ exports.saveRating = function(userRating, cb) {
 //////////////////////////////////////////////////////////////////////
 
 exports.getRatings = function(customerName, cb) {
+  console.log(customerName);
   db.Customers.findOne({where: {username: customerName}})
   .then(function(user) {
     var customerId = user.id;
-    db.ProductRatings.findAll({where: {CustomerId: customerId}})
+    console.log(customerId);
+    db.ProductRatings.findAll({where: {customer: customerId}})
     .then(function(ratings) {
       cb(null, ratings);
     }).catch(function(err) {
+      console.log('this is the error from finding ratings', err);
       cb(err);
     });
   }).catch(function(err) {
+      console.log('this is the error', err);
       cb(err);
   });
 };

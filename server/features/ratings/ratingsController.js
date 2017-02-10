@@ -3,15 +3,23 @@
 const Auth = require('./../../../db/controllers/ratingsController');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
+const Beers = require('./../../../server/api/beers/beerController');
 
 const getRatings = function(req, res) {
-  Auth.getRating(req.body, function(err, data) {
+  Auth.getRatings(req.session.user.username, function(err, data) {
     if (err) {
-      console.log('Could not retrieve ratings');
+      console.log('Could not retrieve ratings', err);
       res.status(401);
       res.end();
     } else {
-      console.log(data);
+      Beers.fetchBeersByIds(data, function(err, beerObj) {
+        if (err) {
+          console.log('Not able to return beer array of objects', err);
+        } else {
+          res.status(200).send(beerObj);
+          res.end();      
+        }
+      });
     }
   });
 };
