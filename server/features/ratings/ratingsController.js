@@ -12,7 +12,15 @@ const getRatings = function(req, res) {
       res.status(401);
       res.end();
     } else {
-      console.log('THIS IS THE RETURNED DATA',data);
+      console.log('BEFORE CALL BEER CONTROLLER');
+      Beers.fetchBeersByBreweryId(data, function(err, beerObj) {
+        if (err) {
+          console.log('Not able to return beer array of objects', err);
+        } else {
+          res.status(200).send(beerObj);
+          res.end();      
+        }
+      });
     }
   });
 };

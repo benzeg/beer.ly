@@ -29,3 +29,16 @@ exports.fetch = (api, queryOptions) => {
       return error;
     });
 };
+
+exports.fetchBeer = (api, queryOptions, cb) => {
+  const url = createUrl(api, queryOptions);
+  axios.get(url)
+    .then((response) => {
+      cb(null, response);
+    })
+    .catch((error) => {
+      cb(error, null);
+    });
+};
+
+
