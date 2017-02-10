@@ -34,11 +34,12 @@ class Checkout extends React.Component {
     // prevent duplicate charges by disabling submit button
     this.setState({ submitDisabled: true});
 
+    // combine address form fields into a single string
     let deliveryAddress = this.formFields.address
-      + this.formFields.city
-      + this.formFields.state
-      + this.formFields.zipcode
-      + this.formFields.country;
+      + ' ' + this.formFields.city
+      + ' ' + this.formFields.state
+      + ' ' + this.formFields.zipcode
+      + ' ' + this.formFields.country;
 
     let breweryIDs = this.cart.map((beer) => beer.breweries[0].id);
 
@@ -47,6 +48,7 @@ class Checkout extends React.Component {
       breweryIDs: breweryIDs
     };
 
+    const context = this;
     // send form here
     axios({
       method: 'post',
@@ -57,7 +59,7 @@ class Checkout extends React.Component {
       }
     })
     .then((response) => {
-      this.setState({ paymentComplete: true});
+      context.setState({ paymentComplete: true});
     })
     .catch((error) => {
       console.log('Error: ', error);
