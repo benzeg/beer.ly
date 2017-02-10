@@ -17,16 +17,16 @@ exports.saveRating = function(userRating, cb) {
         productStyleId: product.styleId,
         productBrewery: product.name,
         rating: rating}})
-  	.spread(function(rating, created) {
+  	.spread(function(obj, created) {
   		if (created === false) {
-  		  rating.rating = rating;
-        rating.save().then(function(rating) {
-          cb(null, rating);
+  		  obj.rating = rating;
+        obj.save().then(function(rating) {
+          cb(null, obj);
         }).catch(function(err) {
           cb(err);
         });
   		} else {
-  		  cb(null, rating);
+  		  cb(null, obj);
   		}
   	});
   }).catch(function(err) {
