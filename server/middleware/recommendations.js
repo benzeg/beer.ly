@@ -25,14 +25,12 @@ exports.getRecommendedStyleIds = function(customer, cb) {
   	  		recommendedStyleIds.push(styleId);
   	  	}
   	  }
-      console.log('LINE 28 IN GETRECOMMEND');
   	  return exports.getRecommendedProducts(recommendedStyleIds, cb);
   	}
   });
 };
 
 exports.getRecommendedProducts = function(styleIdArray, cb) {
-  console.log('LINE 35 IN GETRECOMMENDPRODUCTS');
   var beerArray = [];
   styleIdArray.forEach(function(styleId) {
   	beerController.fetchBeersByStyleId(styleId)
@@ -47,7 +45,6 @@ exports.getRecommendedProducts = function(styleIdArray, cb) {
 };
 
 exports.randomize = function(beerArray) {
-  console.log('LINE 50 IN RANDOMIZE');
   var counter = 0;
   var newbeerArray = [];
   var newbeerCheck = {};

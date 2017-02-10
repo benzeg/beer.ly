@@ -32,7 +32,6 @@ exports.fetch = (api, queryOptions) => {
 
 exports.fetchBeer = (api, queryOptions, cb) => {
   const url = createUrl(api, queryOptions);
-  console.log('THIS IS THE URL THAT SENT', url);
   axios.get(url)
     .then((response) => {
       cb(null, response);
