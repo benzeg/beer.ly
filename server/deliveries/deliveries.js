@@ -2,13 +2,18 @@
 
 const router = require('express').Router();
 const drivers = require('./drivers/driverRoutes');
+const Auth = require('./../../db/controllers/authController');
 
-// Middleware authentication
-// router.use(function checkPassword(req, res, next) {
-//   will insert benze checkPassword function here. then next will happen
-//   next();
-
-// });
+// Middleware Authentication
+router.use(function checkPassword(req, res, next) {
+  Auth.driverLogin(req.body, function(err, driver) {
+    if (err) {
+      console.log('Username and password do not match', err);
+    } else {
+      next();
+    }
+  });
+});
 
 router.use('/driver', drivers);
 

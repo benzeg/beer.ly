@@ -57,3 +57,26 @@ exports.userLogin = function(userInput, cb) {
     cb(err);
   });
 };
+
+exports.driverLogin = function(driverInput, cb) {
+  var username = driverInput.username;
+  var password = driverInput.password;
+
+  db.Drivers.findOne({where: {username: username}})
+  .then(function(driver) {
+    bcrypt.compare(password, driver.password, function(err, res) {
+    if (res !== true) {
+      var error = "Username/Password do not match";
+      cb(error);
+    } else {
+      var newDriver = {};
+      newDriver.username = driver.username;
+      newDriver.phonenumber = driver.phonenumber;
+      newDriver.location = driver.location;
+      cb(null, newDriver);
+    }
+    });
+  }).catch(function(err) {
+    cb(err);
+  });
+};
