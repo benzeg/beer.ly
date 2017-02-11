@@ -1,16 +1,16 @@
 var db = require('../index.js');
 
-exports.saveDeliveries = function(transaction, cb) {
+exports.saveDelivery = function(transaction, cb) {
   var customer = transaction.username;
   var supplyAddresses = transaction.supplyAddresses;
   supplyAddresses = JSON.stringify(supplyAddresses);
   var deliveryAddress = transaction.deliveryAddress;
   var driverId = 1;
 
-  db.Customers.findOne({where: {username: customer}})
+  db.Customers.findOne({where: {username: username}})
   .then(function(user) {
   	var customerId = user.id;
-  	db.Deliveries.create(
+  	db.Transactions.create(
   	{supplyAddresses: supplyAddresses,
   	 deliveryAddress: deliveryAddress,
 	 deliveryStatus: 'Not assigned',
@@ -27,7 +27,7 @@ exports.saveDeliveries = function(transaction, cb) {
   });
 };
 
-exports.updateDeliveries = function(delivery, cb) {
+exports.updateDelivery = function(delivery, cb) {
   //deliveryStatus:
   //"not assigned"
   //"Delivery Job Accepted"
@@ -52,6 +52,37 @@ exports.updateDeliveries = function(delivery, cb) {
   	}).catch(function(err) {
   	  cb(err);
   	});
-  })
+  });
 };
 
+exports.getDelivery = function(driver, cb) {
+  var username = driver.username;
+  db.Drivers.findOne({where: {username: username}})
+  .then(function(user) {
+  	var driverId = user.id;
+  	db.Deliveries.findOne({where: {deliveryStatus: 'Not assigned', driver: driverId}})
+  	.then(function(delivery) {
+  	  cb(null, [delivery]);
+  	}).catch(function(err) {
+  	  cb(err);
+  	})
+  }).catch(function(err) {
+  	cb(err);
+  });
+};
+
+exports.getDeliveriesStatus = function(customer, cb) {
+  var username = customer.username;
+  db.Customers.findOne({where: {username: username}})
+  .then(function(user) {
+  	var customerId = user.id;
+  	db.Deliveries.findAll({where: {customer: customerId}})
+  	.then(function(deliveries) {
+  	  cb(null, deliveries);
+  	}).catch(function(err) {
+  	  cb(err);
+  	})
+  }).catch(function(err) {
+  	cb(err);
+  });
+};
