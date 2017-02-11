@@ -59,9 +59,10 @@ class Delivery extends React.Component {
   }
 
   render() {
+    // construct query string for Google Embed API using the driver's current latitude / longitude
     let googleMapsURL = 'https://www.google.com/maps/embed/v1/place'
                       + '?key=' + googleMapsAPIEmbedKey
-                      + '&q= ' + 'Hack+Reactor+San+Francisco';
+                      + '&q= ' + this.state.latitude + ',' + this.state.longitude;
     return (
       <div className={styles.wrapper}>
         <div className={styles.title}>
