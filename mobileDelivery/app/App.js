@@ -5,6 +5,7 @@ import { Toolbar } from 'react-native-material-ui';
 
 import _ from 'lodash';
 import update from 'immutability-helper';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import { SERVER_ADDRESS, USERNAME, PASSWORD } from './config/ServerConfig.js';
 
@@ -14,7 +15,6 @@ import DeliveryStatusUpdateOptionsList from './components/DeliveryStatusUpdateOp
 import RemoveWarehouseWaypointList from './components/RemoveWarehouseWaypointList.js';
 
 import LocationTracker from './components/LocationTracker.js';
-
 
 import Container from './components/Container.js';
 
@@ -47,34 +47,38 @@ class App extends React.Component {
 
   // The App fetching pending jobs from the server before it renders
   componentWillMount() {
-    // this.fetchPendingJobs();
+    this.fetchPendingJobs();
   }
 
   fetchPendingJobs = () => {
-    fetch(SERVER_ADDRESS + '/driver/deliveries', {
-      method: 'GET',
-      headers: {
-        'Accept': 'applications/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password,
-      })
-    }).then((response) => {
+    RNFetchBlob.config({
+      trusty: true,
+    })
+    .fetch('GET', SERVER_ADDRESS + '/driver/deliveries?username=' + this.state.username + '&password=' + this.state.password)
+    .then((response) => {
       let newPendingJobs = response.json();
 
-      console.log(newPendingJobs);
+      // If we have no pending job...
+      if (newPendingJobs.length === 1 && newPendingJobs[0] === null) {
+        newPendingJobs = [];
+      } else {
+      // We JSON.parse the supplyAddress due to the way the server provides it to us
+        newPendingJobs.forEach(job => {
+          job.supplyAddresses = JSON.parse(job.supplyAddresses);
+        });
+      }
+
 
       this.setState({
         isFetchingPendingJobs: false,
         pendingJobs: newPendingJobs
       });
-    }).catch(error => {
-      this.setState({
-        pendingJobs: []
-      });
-      console.warn('Fetching Pending Jobs Error: ', error);
+    })
+    .catch((error, statusCode) => {
+      // this.setState({
+      //   pendingJobs: []
+      // });
+      console.warn('Fetching Pending Jobs Error: ', statusCode, error);
     });
   }
 
@@ -94,13 +98,14 @@ class App extends React.Component {
       isSelectingUpdatedJobStatus: false
     },
     () => {
-      fetch(SERVER_ADDRESS, {
-        method: 'POST',
-        headers: {
+      RNFetchBlob.config({
+        trusty: true,
+      })
+      .fetch('POST', SERVER_ADDRESS + '/driver/deliveryStatus', {
           'Accept': 'applications/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
+        JSON.stringify({
           username: this.state.username,
           password: this.state.password,
           jobid: this.state.activeJob.id,
@@ -108,7 +113,7 @@ class App extends React.Component {
           latitude: this.state.location.latitude,
           longitude: this.state.location.longitude
         })
-      })
+      )
       .then((response) => {
         // If the delviery status is "delivered", we show the pending job pages again
         if (this.state.deliveryStatus === 'Delivered to Customer') {
@@ -179,8 +184,7 @@ class App extends React.Component {
         }
 
         {this.state.activeLayout === 'PendingJobList' &&
-          /*< PendingJobListLayout jobList={this.state.pendingJobs} onJobPress={this.handleJobSelect}/> */
-          <PendingJobListLayout onJobPress={this.handleJobSelect}/>
+          <PendingJobListLayout jobList={this.state.pendingJobs} onJobPress={this.handleJobSelect}/>
         }
 
         {this.state.activeLayout === 'ActiveJobDashBoard' &&
