@@ -13,7 +13,7 @@ exports.saveDelivery = function(transaction, cb) {
   	db.Transactions.create(
   	{supplyAddresses: supplyAddresses,
   	 deliveryAddress: deliveryAddress,
-	 deliveryStatus: 'Not assigned',
+	 deliveryStatus: 'Finding Driver',
 	 deliveryTime: null,
 	 customer: customerId,
 	 driver: driverId})

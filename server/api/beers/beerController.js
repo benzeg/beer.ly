@@ -3,6 +3,38 @@
 const utils = require('../utils/helpers');
 const config = require('../../config/apiKeys.js');
 
+exports.fetchBreweryAddresses = function(breweriesArray, cb) {
+  const api = {
+    key: config.breweryDBKey,
+    url: 'http://api.brewerydb.com/v2/',
+    endPoint: 'breweries/'
+  };
+
+  const breweriesString = breweriesArray.join(',');
+
+  const queryOptions = {
+    ids: breweriesString,
+    withLocations: 'Y'
+  };
+
+  utils.fetchBeer(api, queryOptions, function(err, result) {
+    if (err) {
+      console.log('Could not fetch addresses', err);
+      cb(err);
+    } else {
+      var addressArray = [];
+      var count = 0;
+      result.data.data.forEach(function(beer) {
+        addressArray.push(beer.locations[0]);
+        count++;
+      });
+      if (count === result.data.data.length) {
+        cb(null, addressArray);
+      }
+    }
+  });
+};
+
 function fetchBreweryByName(name) {
   const api = {
     key: config.breweryDBKey,
