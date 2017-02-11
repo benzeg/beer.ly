@@ -30,6 +30,7 @@ exports.fetch = (api, queryOptions) => {
   } else {
     url = createUrl(api, queryOptions);
   }
+  console.log('url', url);
   return axios.get(url)
     .then((response) => {
       if (decorator) {
