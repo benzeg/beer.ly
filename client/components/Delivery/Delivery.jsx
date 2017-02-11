@@ -4,6 +4,13 @@ import { browserHistory } from 'react-router';
 import styles from './Delivery.css';
 import { googleMapsAPIEmbedKey } from '../../../server/config/apiKeys';
 
+const deliveryStatusShowMap = [
+  'Delivery Job Accepted',
+  'Enroute to Warehouse',
+  'Loading Goods',
+  'Enroute to Customer',  
+];
+
 class Delivery extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +22,7 @@ class Delivery extends React.Component {
   }
 
   componentDidMount() {
+    // this.getDeliveryStatus();
     this.refreshID = setInterval(this.getDeliveryStatus, 2000);
   }
 
@@ -26,7 +34,7 @@ class Delivery extends React.Component {
     const context = this;
 
     let fakeData = {
-      deliveryStatus: 'en route',
+      deliveryStatus: 'Enroute to Customer',
       latitude: 37.78825,
       longitude: -122.4324
     };
@@ -69,14 +77,17 @@ class Delivery extends React.Component {
           <h1>Your Delivery Status</h1>
           <p className={styles.details}>Status: <strong>{this.state.deliveryStatus}</strong></p>
         </div>
-        <div>
-          <iframe
-            width="600"
-            height="450"
-            frameBorder="0"
-            src={googleMapsURL} allowFullScreen>
-          </iframe>
-        </div>
+        { deliveryStatusShowMap.includes(this.state.deliveryStatus) &&
+          (<div>
+            <p>Your driver's location:</p>
+            <iframe
+              width="600"
+              height="450"
+              frameBorder="0"
+              src={googleMapsURL} allowFullScreen>
+            </iframe>
+          </div>)
+        }
       </div>
     );
   }
