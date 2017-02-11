@@ -18,7 +18,12 @@
   /*justify-content: center;*/
 }
 
+.intro {
+  width: 25%;
+  margin: 70px 76px;  
+}
+
 .form {		
   width: 25%;
-  margin-left: 40px;
+  margin-left: 76px;
 }
