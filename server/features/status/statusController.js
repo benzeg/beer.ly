@@ -15,7 +15,7 @@ const getStatus = function(req, res) {
       res.end();
     } else {
       console.log('statussss', status[0].dataValues);
-      res.status(200).send(status);
+      res.status(200).send(status[0].dataValues);
       res.end();
     }
   });

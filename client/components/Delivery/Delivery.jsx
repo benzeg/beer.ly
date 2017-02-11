@@ -22,8 +22,8 @@ class Delivery extends React.Component {
   }
 
   componentDidMount() {
-    // this.getDeliveryStatus();
-    this.refreshID = setInterval(this.getDeliveryStatus, 2000);
+    this.getDeliveryStatus();
+    this.refreshID = setInterval(this.getDeliveryStatus, 5000);
   }
 
   componentWillUnmount() {
@@ -33,24 +33,24 @@ class Delivery extends React.Component {
   getDeliveryStatus() {
     const context = this;
 
-    let fakeData = {
-      deliveryStatus: 'Enroute to Customer',
-      latitude: 37.78825,
-      longitude: -122.4324
-    };
+    // let fakeData = {
+    //   deliveryStatus: 'Enroute to Customer',
+    //   latitude: 37.78825,
+    //   longitude: -122.4324
+    // };
 
-    context.handleSuccess(fakeData);
+    // context.handleSuccess(fakeData);
 
-    // axios({
-    //   method: 'get',
-    //   url: 'user/status'
-    // })
-    // .then((response) => {
-    //   context.handleSuccess(response.data);
-    // })
-    // .catch((thrown) => {
-    //   context.handleError(thrown);
-    // });
+    axios({
+      method: 'get',
+      url: 'user/status'
+    })
+    .then((response) => {
+      context.handleSuccess(response.data);
+    })
+    .catch((thrown) => {
+      context.handleError(thrown);
+    });
   }
 
   handleSuccess(data) {

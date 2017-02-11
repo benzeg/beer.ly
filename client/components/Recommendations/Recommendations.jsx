@@ -64,6 +64,7 @@ class Recommendations extends React.Component {
         <div className={styles.title}>
           <h1>Beers You Might Like</h1>
           <p className={styles.details}>Recommendations based on your personal beer ratings.</p>
+          { !this.state.beers.length && (<p><strong>Fetching your personalized recommendations... if you don't see any after a moment, please rate more beers!</strong></p>) }
         </div>
         <div>
           {this.props.cart.length > 0 ? <BeerCart beers={this.props.cart} removeFromCart={this.props.removeFromCart} inCheckout={this.props.inCheckout} checkout={this.props.checkout} /> : null}
