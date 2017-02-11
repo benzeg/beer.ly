@@ -54,9 +54,8 @@ Customers.hasMany(Transactions);
 /////////////////////////////////////////////////////////////////
 
 var Deliveries = db.define('Deliveries', {
-  orderItems: Sequelize.STRING,
-  totalCost: Sequelize.DECIMAL,
-  transactionTime: Sequelize.DATE,
+  supplyAddresses: Sequelize.TEXT,
+  deliveryAddress: Sequelize.STRING,
   deliveryStatus: Sequelize.STRING,
   deliveryTime: Sequelize.DATE
 });

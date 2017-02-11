@@ -20,13 +20,13 @@ exports.saveRating = function(userRating, cb) {
   	.spread(function(obj, created) {
   		if (created === false) {
   		  obj.rating = rating;
-        obj.save().then(function() {
-          cb(null, rating);
+        obj.save().then(function(rating) {
+          cb(null, obj);
         }).catch(function(err) {
           cb(err);
         });
   		} else {
-  		  cb(null, rating);
+  		  cb(null, obj);
   		}
   	});
   }).catch(function(err) {
