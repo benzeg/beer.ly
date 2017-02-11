@@ -7,9 +7,11 @@ exports.getRecommendedStyleIds = function(customer, cb) {
       cb(err);
   	} else {
   	  var ratingsObj = {};
+      ratingsObj['count'] = 0;
   	  ratings.forEach(function(rating) {
   	  	var styleId = rating.productStyleId;
   	  	if (!ratingsObj[styleId]) {
+          ratingsObj.count++;
   	  		ratingsObj[styleId] = {average:0, setNum:0};
   	  	};
   	  	var sum = ratingsObj[styleId].average * ratingsObj[styleId].setNum;
@@ -19,13 +21,20 @@ exports.getRecommendedStyleIds = function(customer, cb) {
   	  });
 
   	  var recommendedStyleIds = [];
+      var counter = 0;
 
   	  for (var styleId in ratingsObj) {
-  	  	if (ratingsObj[styleId].average >= 3) {
-  	  		recommendedStyleIds.push(styleId);
-  	  	}
+        if(styleId !== 'count') {
+          counter++;
+    	  	if (ratingsObj[styleId].average >= 3) {
+    	  		recommendedStyleIds.push(styleId);
+    	  	}
+
+          if (counter === ratingsObj.count) {
+            return exports.getRecommendedProducts(recommendedStyleIds, cb);
+          }
+        }
   	  }
-  	  return exports.getRecommendedProducts(recommendedStyleIds, cb);
   	}
   });
 };
