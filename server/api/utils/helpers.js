@@ -34,7 +34,7 @@ exports.fetch = (api, queryOptions) => {
     .then((response) => {
       if (decorator) {
         var counter = 0;
-        response.data.forEach(function(beer) {
+        response.data.data.forEach(function(beer) {
           var newArray = [];
           newArray.push({id: id});
           beer.breweries = newArray;
