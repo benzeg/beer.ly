@@ -10,6 +10,8 @@ const getDeliveries = function(req, res) {
   Driver.getDelivery(req.body, function(err, data) {
     if (err) {
       console.log('Could not retrieve deliveries', err);
+      res.status(500);
+      res.end();
     } else {
       console.log(data);
       res.status(200).send(data);
@@ -32,7 +34,6 @@ const postStatus = function(req, res) {
 };
 
 const actions = {
-  //for testing only
   get: {
     '/': getDeliveries
   },
