@@ -12,25 +12,34 @@ const getStatus = function(req, res) {
 };
 
 const postJob = function(req, res) {
-  // address, api call
   Breweries.fetchBreweryAddresses(req.body.supplyAddresses, function(err, supplyArray) {
     if (err) {
       console.log('Could not get locations of breweries', err);
     } else {
-      const transaction = {
-        username: req.body.username,
-        supplyAddresses: supplyArray,
-        deliveryAddress: req.body.deliveryAddress
-      };
-
-      Status.saveDeliveries(transaction, function(err, success) {
-        if (err) {
-          console.log('Could not save deliveries', err);
-        } else {
-          res.status(201);
-          res.end();
-        }
+      var addresses = [];
+      var counter = 0;
+      supplyArray.forEach(function(address) {
+        var newString = address.streetAddress + ', ' + address.locality + ', ' + address.region;
+        addresses.push(newString);
+        counter++;
       });
+
+      if (counter === supplyArray.length) {
+        const transaction = {
+          username: req.session.user.username,
+          supplyAddresses: addresses,
+          deliveryAddress: req.body.deliveryAddress
+        };
+
+        Status.saveDeliveries(transaction, function(err, success) {
+          if (err) {
+            console.log('Could not save deliveries', err);
+          } else {
+            res.status(201);
+            res.end();
+          }
+        });
+      }
     }
   });
 };
