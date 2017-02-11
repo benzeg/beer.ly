@@ -28,9 +28,12 @@ class BeerItem extends React.Component {
   }
 
   handleClick() {
+    console.log('Beer: ', this.props.beer);
     const beer = {
       name: this.props.beer.name,
-      image: mockImages[this.props.beer.style.id % mockImages.length]
+      image: mockImages[this.props.beer.style.id % mockImages.length],
+      id: this.props.beer.id,
+      breweryId: this.props.beer.breweries[0].id
     };
     this.props.addToCart(beer);
   }

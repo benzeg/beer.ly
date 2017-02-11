@@ -69,7 +69,7 @@ class Ratings extends React.Component {
         <div>
           {this.props.cart.length > 0 ? <BeerCart beers={this.props.cart} removeFromCart={this.props.removeFromCart} inCheckout={this.props.inCheckout} checkout={this.props.checkout} /> : null}
           {this.props.inCheckout ?
-            <Checkout />
+            <Checkout cart={this.props.cart} />
             : <BeerList beers={this.state.beers} addToCart={this.props.addToCart} />
           }
         </div>

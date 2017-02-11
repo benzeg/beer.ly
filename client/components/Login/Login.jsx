@@ -69,7 +69,6 @@ class Login extends React.Component {
       // TODO: clear input fields
       browserHistory.push('/login');
     });
-
   }
 
   // Event handler to populate all values into the formFields object

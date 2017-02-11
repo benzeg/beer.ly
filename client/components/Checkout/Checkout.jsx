@@ -1,116 +1,101 @@
 import React from 'react';
-import styles from './Checkout.css';
-import NavBar from '../NavBar/NavBar';
+import { browserHistory } from 'react-router';
 import axios from 'axios';
+import styles from './Checkout.css';
 
-import { stripePublishableKey, stripeTestKey } from '../../../server/config/apiKeys';
-import { ReactScriptLoaderMixin } from 'react-script-loader';
+class Checkout extends React.Component {
 
-const Checkout = React.createClass({
-  mixins: [ ReactScriptLoaderMixin ],
+  constructor(props) {
+    super(props);
+    this.formFields = {};
+    this.state = this.getInitialState();
 
-  getInitialState: function() {
+    this.handleInputFieldChange = this.handleInputFieldChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  getInitialState() {
     return {
-      stripeLoading: true,
-      stripeLoadingError: false,
       submitDisabled: false,
-      paymentError: null,
-      paymentComplete: false,
-      token: null
+      paymentComplete: false
     };
-  },
+  }
 
-  getScriptURL: function() {
-    return 'https://js.stripe.com/v2/';
-  },
+  // Event handler to populate all values into the formFields object
+  // for later use by onSubmit()
+  handleInputFieldChange(event) {
+    this.formFields[event.target.name] = event.target.value;
+  }
 
-  onScriptLoaded: function() {
-    if (!Checkout.getStripeToken) {
-      // Put your publishable key here
-      Stripe.setPublishableKey(stripePublishableKey);
-
-      this.setState({ stripeLoading: false, stripeLoadingError: false });
-    }
-  },
-
-  onScriptError: function() {
-    this.setState({ stripeLoading: false, stripeLoadingError: true });
-  },
-
-  onSubmit: function(event) {
-    const self = this;
+  onSubmit(event) {
+    // prevent standard HTML form submission
     event.preventDefault();
-
+    
     // prevent duplicate charges by disabling submit button
-    this.setState({ submitDisabled: true, paymentError: null });
+    this.setState({ submitDisabled: true});
+
+    // combine address form fields into a single string
+    let deliveryAddress = this.formFields.address
+      + ' ' + this.formFields.city
+      + ' ' + this.formFields.state
+      + ' ' + this.formFields.zipcode
+      + ' ' + this.formFields.country;
+
+    let breweryIDs = this.cart.map((beer) => beer.breweries[0].id);
+
+    let postData = {
+      deliveryAddress: deliveryAddress,
+      breweryIDs: breweryIDs
+    };
+
+    const context = this;
     // send form here
-    Stripe.createToken(event.target, function(status, response) {
-      if (response.error) {
-        self.setState({ paymentError: response.error.message, submitDisabled: false });
+    axios({
+      method: 'post',
+      url: '/user/status',
+      data: JSON.stringify(postData),
+      headers: {
+        'Content-Type': 'application/json'
       }
-      else {
-        self.setState({ paymentComplete: true, submitDisabled: false, token: response.id });
-        // make request to your server here!
-
-        axios.post('auth/checkout', {
-          stripeToken: response.id,
-          //amount
-        })
-          .then((response) => {
-
-          })
-          .catch((error) => {
-
-          });
-      }
+    })
+    .then((response) => {
+      context.setState({ paymentComplete: true});
+    })
+    .catch((error) => {
+      console.log('Error: ', error);
+      browserHistory.push('/login');
     });
-  },
+  }
 
-  render: function() {
-    if (this.state.stripeLoading) {
-      return (
-        <div className={styles.wrapper}>
-          <div>Loading</div>
-        </div>
-      );
-    }
-    else if (this.state.stripeLoadingError) {
-      return (
-        <div className={styles.wrapper}>
-          <div>Error</div>
-        </div>
-      );
-    }
-    else if (this.state.paymentComplete) {
+  render() {
+    if (this.state.paymentComplete) {
       return (
         <div className={styles.wrapper}>
           <div>Payment Complete!</div>
         </div>
       );
-    }
-    else {
+    } else {
       return (
         <div className={styles.wrapper}>
           <form onSubmit={this.onSubmit} >
             <div className={styles.flexRow}>
               <div className={styles.flexItem}>
                 <h2 className={styles.section}>Delivery Address</h2>
-                <input className={styles.input} type="text" data-stripe="name" placeholder="Name" /><br />
-                <input className={styles.input} type="text" data-stripe="address-line1" placeholder="Address" /><br />
-                <input className={styles.input} type="text" data-stripe="address-city" placeholder="City" /><br />
-                <input className={styles.input} type="text" data-stripe="address-state" placeholder="State" /><br />
-                <input className={styles.input} type="text" data-stripe="address-zip" placeholder="Zipcode" /><br />
-                <input className={styles.input} type="text" data-stripe="address-country" placeholder="Country" /><br />
+                <input className={styles.input} type="text" name="name" placeholder="Name" onChange={this.handleInputFieldChange} /><br />
+                <input className={styles.input} type="text" name="address" placeholder="Address" onChange={this.handleInputFieldChange} /><br />
+                <input className={styles.input} type="text" name="city" placeholder="City" onChange={this.handleInputFieldChange} /><br />
+                <input className={styles.input} type="text" name="state" placeholder="State" onChange={this.handleInputFieldChange} /><br />
+                <input className={styles.input} type="text" name="zipcode" placeholder="Zipcode" onChange={this.handleInputFieldChange} /><br />
+                <input className={styles.input} type="text" name="country" placeholder="Country" onChange={this.handleInputFieldChange} /><br />
               </div>
 
               <div className={styles.flexItem}>
                 <h2 className={styles.section}>Payment Method</h2>
-                <input className={styles.input} type="text" data-stripe="number" placeholder="Credit Card Number" /><br />
-                <input className={styles.input} type="text" data-stripe="exp-month" placeholder="Expiration Month" /><br />
-                <input className={styles.input} type="text" data-stripe="exp-year" placeholder="Expiration Year" /><br />
-                <input className={styles.input} type="text" data-stripe="cvc" placeholder="CVC" /><br />
+                <input className={styles.input} type="text" name="cardNumber" placeholder="Credit Card Number" onChange={this.handleInputFieldChange} /><br />
+                <input className={styles.input} type="text" name="expMonth" placeholder="Expiration Month" onChange={this.handleInputFieldChange} /><br />
+                <input className={styles.input} type="text" name="expYear" placeholder="Expiration Year" onChange={this.handleInputFieldChange} /><br />
+                <input className={styles.input} type="text" name="CVC" placeholder="CVC" onChange={this.handleInputFieldChange} /><br />
 
-                <span>{ this.state.paymentError }</span><br />
                 <input className={styles.submit} disabled={this.state.submitDisabled} type="submit" value="Purchase" />
               </div>
             </div>
@@ -119,6 +104,7 @@ const Checkout = React.createClass({
       );
     }
   }
-});
+
+}
 
 export default Checkout;

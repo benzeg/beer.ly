@@ -28,7 +28,9 @@ class Nav extends React.Component {
   }
 
   render() {
-    const isHomePage = this.props.location.pathname === '/';
+    const isHomePage = this.props.location.pathname === '/'
+                    || this.props.location.pathname === '/login'
+                    || this.props.location.pathname === '/signup';
     const logo = isHomePage ? styles.lightLogo : styles.logo;
     const cart = isHomePage ? null : <Cart cart={this.props.cart} location={this.props.location.pathname}/>;
     const navbar = isHomePage ? styles.transparentNavbar : styles.navbar;
@@ -55,7 +57,7 @@ class Nav extends React.Component {
           : <span></span>}
           { !isHomePage ?
             <h1>
-              <Link to="/" className={styles.navItem}>Delivery</Link>
+              <Link to="/delivery" className={styles.navItem}>Delivery</Link>
             </h1>
           : <span></span>}
           { !isHomePage ?
