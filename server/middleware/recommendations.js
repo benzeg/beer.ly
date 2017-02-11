@@ -24,7 +24,7 @@ exports.getRecommendedStyleIds = function(customer, cb) {
       var counter = 0;
 
       if (ratingsObj.count === 0) {
-        return [];
+        cb(null, []);
       }
       
   	  for (var styleId in ratingsObj) {
