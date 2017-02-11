@@ -7,6 +7,8 @@ import { ActionButton } from 'react-native-material-ui';
 
 import MapView from 'react-native-maps';
 
+import update from 'immutability-helper';
+
 import Container from '../components/Container.js';
 
 import { SERVER_ADDRESS, USERNAME, PASSWORD } from '../config/ServerConfig.js';
@@ -18,7 +20,8 @@ class ActiveJobDashBoardLayout extends React.Component {
     super(props);
 
     this.state = {
-      navigationRoute: []
+      navigationRoute: [],
+      warehouseAddressLocations: {}
     };
 
     this.oldLatitude = 0;
@@ -29,7 +32,40 @@ class ActiveJobDashBoardLayout extends React.Component {
   }
 
   componentWillMount() {
-    this.drivingRouteRefreshID = setInterval(()=> this.updateDrivingRoute(), 2000);
+    // this.drivingRouteRefreshID = setInterval(()=> this.updateDrivingRoute(), 2000);
+
+    // Geocode the warehouse addresses
+    for (let i = 0; i < this.props.job.supplyAddresses.length; i++) {
+      let address = this.props.job.supplyAddresses[i];
+
+      if (this.state.warehouseAddressLocations[address] === undefined) {
+
+        let geocodingRequestURL = 'https://maps.googleapis.com/maps/api/geocode/json?' +
+          'address=' + address +
+          '&key=' + GOOGLEMAP_APIKEY;
+
+        // Call Google Server
+        axios({
+          method: 'post',
+          url: geocodingRequestURL,
+          data: {
+          }
+        }).then((response) => {
+          let newAddressLocationPair = {};
+          newAddressLocationPair[address] = response.data.results[0].geometry.location;
+
+          let newState = update(this.state, {
+            warehouseAddressLocations: {$merge: newAddressLocationPair}
+          });
+
+          this.setState(newState);
+
+        }).catch(function(error) {
+          console.log(error);
+        });
+      }
+    }
+
   }
 
   componentWillUnmount() {
@@ -58,16 +94,20 @@ class ActiveJobDashBoardLayout extends React.Component {
       data: {
       }
     }).then((response) => {
-      this.setState({
-        navigationRoute: PolylineDecoder(response.data.routes[0].overview_polyline.points)
-      });
+      console.log(response.data);
+
+      if (response.data.routes !== undefined) {
+        this.setState({
+          navigationRoute: PolylineDecoder(response.data.routes[0].overview_polyline.points)
+        });
+      }
 
       // Save the location as the 'old' location value for future comparison
       this.oldLatitude = this.props.location.latitude;
       this.oldLongitude = this.props.location.longitude;
 
     }).catch(function(error) {
-      console.log(error);
+      // console.log('Error, updateDrivingRoute:', error);
     });
   }
 
@@ -108,6 +148,15 @@ class ActiveJobDashBoardLayout extends React.Component {
 
           <MapView.Marker coordinate={{latitude: this.props.location.latitude, longitude: this.props.location.longitude}} />
 
+          {this.props.job.supplyAddresses.map((address, index) => {
+            if (this.state.warehouseAddressLocations[address]) {
+              return <MapView.Marker key={index} pinColor={'#0f0'} coordinate={{latitude: this.state.warehouseAddressLocations[address].lat, longitude: this.state.warehouseAddressLocations[address].lng}} />;
+            }
+
+            return null;
+          })}
+
+          {/* Pins on supply warehouses */}
           {this.state.navigationRoute.length > 1 &&
             <MapView.Polyline
             coordinates={this.state.navigationRoute}
