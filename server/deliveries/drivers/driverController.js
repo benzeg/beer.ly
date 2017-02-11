@@ -7,7 +7,7 @@ const config = require('../../config/apiKeys');
 const getDeliveries = function(req, res) {
   // TODO: Function from db controller
   console.log('DELIVERIES WOO');
-  Driver.getDelivery(req.body, function(err, data) {
+  Driver.getDelivery(req.query, function(err, data) {
     if (err) {
       console.log('Could not retrieve deliveries', err);
       res.status(500);
@@ -33,20 +33,20 @@ const postStatus = function(req, res) {
   });
 };
 
-const actions = {
-  get: {
-    '/': getDeliveries
-  },
-  post: {
-    '/': postStatus,
-  }
-};
+// const actions = {
+//   get: {
+//     '/*': getDeliveries
+//   },
+//   post: {
+//     '/*': postStatus,
+//   }
+// };
 
 exports.get = (req, res) => {
   console.log('aewhflew', req.url);
-  actions.get[req.url](req, res);
+  getDeliveries(req, res);
 };
 
 exports.post = (req, res) => {
-  actions.post[req.url](req, res);
+  postStatus(req, res);
 };
