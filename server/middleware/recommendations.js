@@ -22,7 +22,7 @@ exports.getRecommendedStyleIds = function(customer, cb) {
 
   	  var recommendedStyleIds = [];
       var counter = 0;
-
+      
   	  for (var styleId in ratingsObj) {
         if(styleId !== 'count') {
           counter++;
@@ -31,7 +31,11 @@ exports.getRecommendedStyleIds = function(customer, cb) {
     	  	}
 
           if (counter === ratingsObj.count) {
-            return exports.getRecommendedProducts(recommendedStyleIds, cb);
+            if (recommendedStyleIds.length === 0) {
+              cb(null, []);
+            } else {
+              return exports.getRecommendedProducts(recommendedStyleIds, cb);
+            }
           }
         }
   	  }
