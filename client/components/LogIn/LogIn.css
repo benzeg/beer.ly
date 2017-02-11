@@ -20,10 +20,12 @@
 
 .intro {
   width: 25%;
-  margin: 70px 76px;  
+  margin: 200px 76px;  
+  float: left;
 }
 
 .form {		
   width: 25%;
+  /*margin: 200px 76px;*/
   margin-left: 76px;
 }
