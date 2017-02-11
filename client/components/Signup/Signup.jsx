@@ -71,12 +71,7 @@ class Signup extends React.Component {
       }
     })
     .then((response) => {
-      if (response.status === 200) {
-        console.log(response);
         browserHistory.push('/login');
-      } else {
-        browserHistory.push('/signup');
-      }
     })
     .catch((thrown) => {
       console.log('Error: ', thrown);
