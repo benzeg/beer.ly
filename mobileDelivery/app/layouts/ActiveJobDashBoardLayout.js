@@ -32,7 +32,7 @@ class ActiveJobDashBoardLayout extends React.Component {
   }
 
   componentWillMount() {
-    // this.drivingRouteRefreshID = setInterval(()=> this.updateDrivingRoute(), 2000);
+    this.drivingRouteRefreshID = setInterval(()=> this.updateDrivingRoute(), 5000);
 
     // Geocode the warehouse addresses
     for (let i = 0; i < this.props.job.supplyAddresses.length; i++) {
@@ -94,7 +94,7 @@ class ActiveJobDashBoardLayout extends React.Component {
       data: {
       }
     }).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
 
       if (response.data.routes !== undefined) {
         this.setState({
@@ -148,7 +148,7 @@ class ActiveJobDashBoardLayout extends React.Component {
 
           <MapView.Marker coordinate={{latitude: this.props.location.latitude, longitude: this.props.location.longitude}} />
 
-          {this.props.job.supplyAddresses.map((address, index) => {
+          {(this.props.job.supplyAddresses).map((address, index) => {
             if (this.state.warehouseAddressLocations[address]) {
               return <MapView.Marker key={index} pinColor={'#0f0'} coordinate={{latitude: this.state.warehouseAddressLocations[address].lat, longitude: this.state.warehouseAddressLocations[address].lng}} />;
             }

@@ -23,16 +23,18 @@ class PendingJobItem extends React.Component {
 
   render() {
     let job = this.props.jobInfo;
+
+    let supplyAddressText = (job.supplyAddresses).join(',\n');
     return (
       <Card onPress={()=>this.props.onPress(job)}>
         <View style={{padding: 10}}> 
           <Text>
             <Text style={Styles.jobTitle}>Job ID:</Text>
-            <Text style={Styles.jobText}> {job.jobid}</Text>
+            <Text style={Styles.jobText}> {job.id}</Text>
           </Text>
           <Text>
               <Text style={Styles.jobTitle}>Warehouses: {'\n'}</Text>
-              <Text style={Styles.jobText}>{job.supplyAddresses.join(',\n')}</Text>
+              <Text style={Styles.jobText}>{supplyAddressText}</Text>
           </Text>
           <Text>
             <Text style={Styles.jobTitle}>Delivery Address: {'\n'}</Text>
