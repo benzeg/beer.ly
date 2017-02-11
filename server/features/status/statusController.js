@@ -22,7 +22,7 @@ const getStatus = function(req, res) {
 };
 
 const postJob = function(req, res) {
-  Breweries.fetchBreweryAddresses(req.body.supplyAddresses, function(err, supplyArray) {
+  Breweries.fetchBreweryAddresses(req.body.breweryIDs, function(err, supplyArray) {
     if (err) {
       console.log('Could not get locations of breweries', err);
       res.status(500);
