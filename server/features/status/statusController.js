@@ -8,13 +8,25 @@ const Breweries = require('./../../../server/api/beers/beerController');
 // ///////ACTION HANDLERS//////// //
 
 const getStatus = function(req, res) {
-  
+  Status.getDeliveriesStatus(req.session.user, function(err, status) {
+    if (err) {
+      console.log('Not able to get status', err);
+      res.status(500);
+      res.end();
+    } else {
+      console.log('statussss', status[0].dataValues);
+      res.status(200).send(status);
+      res.end();
+    }
+  });
 };
 
 const postJob = function(req, res) {
-  Breweries.fetchBreweryAddresses(req.body.supplyAddresses, function(err, supplyArray) {
+  Breweries.fetchBreweryAddresses(req.body.breweryIDs, function(err, supplyArray) {
     if (err) {
       console.log('Could not get locations of breweries', err);
+      res.status(500);
+      res.end();
     } else {
       var addresses = [];
       var counter = 0;
@@ -31,7 +43,7 @@ const postJob = function(req, res) {
           deliveryAddress: req.body.deliveryAddress
         };
 
-        Status.saveDeliveries(transaction, function(err, success) {
+        Status.saveDelivery(transaction, function(err, success) {
           if (err) {
             console.log('Could not save deliveries', err);
           } else {
