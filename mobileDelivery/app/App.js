@@ -57,7 +57,8 @@ class App extends React.Component {
     .fetch('GET', SERVER_ADDRESS + '/driver/deliveries?username=' + this.state.username + '&password=' + this.state.password)
     .then((response) => {
       let newPendingJobs = response.json();
-
+      console.log(newPendingJobs);
+      
       // If we have no pending job...
       if (newPendingJobs.length === 1 && newPendingJobs[0] === null) {
         newPendingJobs = [];
@@ -67,7 +68,6 @@ class App extends React.Component {
           job.supplyAddresses = JSON.parse(job.supplyAddresses);
         });
       }
-
 
       this.setState({
         isFetchingPendingJobs: false,
@@ -184,7 +184,10 @@ class App extends React.Component {
         }
 
         {this.state.activeLayout === 'PendingJobList' &&
-          <PendingJobListLayout jobList={this.state.pendingJobs} onJobPress={this.handleJobSelect}/>
+          <PendingJobListLayout 
+            jobList={this.state.pendingJobs} 
+            onJobPress={this.handleJobSelect}
+            onPendingJobListRefresh={this.fetchPendingJobs} />
         }
 
         {this.state.activeLayout === 'ActiveJobDashBoard' &&
