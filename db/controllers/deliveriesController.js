@@ -38,6 +38,8 @@ exports.updateDelivery = function(delivery, cb) {
   var jobId = delivery.jobid;
   var deliveryStatus = delivery.deliveryStatus;
   var deliveryTime = null;
+  var longitude = delivery.longitude;
+  var latitude = deliver.latitude;
 
   if (deliveryStatus === 'Delivered to Customer') {
   	deliveryTime = new Date();
@@ -47,6 +49,8 @@ exports.updateDelivery = function(delivery, cb) {
   .then(function(delivery) {
   	delivery.deliveryStatus = deliveryStatus;
   	delivery.deliveryTime = deliveryTime;
+  	delivery.longitude = longitude;
+  	delivery.latitude = latitude;
   	delivery.save().then(function(delivery) {
   	  cb(null, delivery);
   	}).catch(function(err) {
