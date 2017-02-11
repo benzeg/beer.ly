@@ -29,6 +29,17 @@ var Drivers = db.define('Drivers', {
   password: Sequelize.STRING,
 });
 
+Drivers.beforeCreate(function(driver, options, cb) {
+  return bcrypt.hash(driver.password, null, null, function(err, hashedPw) {
+    if (!err) {
+      driver.password = hashedPw;
+      cb(null, options);
+    } else {
+      throw err;
+    }
+  });
+});
+
 /////////////////////////////////////////////////////////////////
 
 var Transactions = db.define('Transactions', {

@@ -2,7 +2,7 @@ var Ratings = require('./../../db/controllers/ratingsController.js');
 var beerController = require('./../api/beers/beerController.js');
 
 exports.getRecommendedStyleIds = function(customer, cb) {
-  Ratings.getRatings(customer, function (err, ratings) {
+  Ratings.getRatings(customer, function(err, ratings) {
   	if (err) {
       cb(err);
   	} else {
@@ -70,4 +70,4 @@ exports.randomize = function(beerArray) {
   	counter += 1;
   }
   return newbeerArray;
-}
+};
