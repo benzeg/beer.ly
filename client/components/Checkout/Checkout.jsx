@@ -41,7 +41,7 @@ class Checkout extends React.Component {
       + ' ' + this.formFields.zipcode
       + ' ' + this.formFields.country;
 
-    let breweryIDs = this.cart.map((beer) => beer.breweries[0].id);
+    let breweryIDs = this.props.cart.map((beer) => beer.breweryId);
 
     let postData = {
       deliveryAddress: deliveryAddress,
