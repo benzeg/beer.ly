@@ -33,7 +33,7 @@ class BeerItem extends React.Component {
       name: this.props.beer.name,
       image: mockImages[this.props.beer.style.id % mockImages.length],
       id: this.props.beer.id,
-      // breweryId: this.props.breweries[0].id
+      breweryId: this.props.beer.breweries[0].id
     };
     this.props.addToCart(beer);
   }
