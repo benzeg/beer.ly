@@ -7,7 +7,7 @@ exports.getRecommendedStyleIds = function(customer, cb) {
       cb(err);
   	} else {
   	  var ratingsObj = {};
-      ratingsObj.count = 0;
+      ratingsObj['count'] = 0;
   	  ratings.forEach(function(rating) {
   	  	var styleId = rating.productStyleId;
   	  	if (!ratingsObj[styleId]) {
@@ -24,13 +24,15 @@ exports.getRecommendedStyleIds = function(customer, cb) {
       var counter = 0;
 
   	  for (var styleId in ratingsObj) {
-        counter++;
-  	  	if (ratingsObj[styleId].average >= 3) {
-  	  		recommendedStyleIds.push(styleId);
-  	  	}
+        if(styleId !== 'count') {
+          counter++;
+    	  	if (ratingsObj[styleId].average >= 3) {
+    	  		recommendedStyleIds.push(styleId);
+    	  	}
 
-        if (counter === ratingsObj.count) {
-          return exports.getRecommendedProducts(recommendedStyleIds, cb);
+          if (counter === ratingsObj.count) {
+            return exports.getRecommendedProducts(recommendedStyleIds, cb);
+          }
         }
   	  }
   	}
