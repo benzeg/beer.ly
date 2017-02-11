@@ -33,7 +33,16 @@ exports.fetch = (api, queryOptions) => {
   return axios.get(url)
     .then((response) => {
       if (decorator) {
-        response.data.breweries = id;
+        var counter = 0;
+        response.data.forEach(function(beer) {
+          var newArray = [];
+          newArray.push({id: id});
+          beer.breweries = newArray;
+          counter++;
+        });
+        if (counter === response.data.length) {
+          return response.data;
+        }
       }
       return response.data;
     })
