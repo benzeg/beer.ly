@@ -1,6 +1,7 @@
 var db = require('../index.js');
 
 exports.saveDeliveries = function(transaction, cb) {
+  console.log('transaction', transaction);
   var customer = transaction.username;
   var supplyAddresses = transaction.supplyAddresses;
   supplyAddresses = JSON.stringify(supplyAddresses);
@@ -13,7 +14,7 @@ exports.saveDeliveries = function(transaction, cb) {
   	db.Deliveries.create(
   	{supplyAddresses: supplyAddresses,
   	 deliveryAddress: deliveryAddress,
-	 deliveryStatus: 'Not assigned',
+	 deliveryStatus: 'Finding Driver',
 	 deliveryTime: null,
 	 customer: customerId,
 	 driver: driverId})
