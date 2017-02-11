@@ -39,7 +39,7 @@ exports.updateDelivery = function(delivery, cb) {
   var deliveryStatus = delivery.deliveryStatus;
   var deliveryTime = null;
   var longitude = delivery.longitude;
-  var latitude = deliver.latitude;
+  var latitude = delivery.latitude;
 
   if (deliveryStatus === 'Delivered to Customer') {
   	deliveryTime = new Date();
@@ -61,7 +61,6 @@ exports.updateDelivery = function(delivery, cb) {
 
 exports.getDelivery = function(driver, cb) {
   var username = driver.username;
-  console.log('WOPREWROPWEWEPROJRWE');
   db.Drivers.findOne({where: {username: username}})
   .then(function(user) {
   	var driverId = user.id;

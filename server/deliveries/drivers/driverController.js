@@ -33,12 +33,11 @@ const postStatus = function(req, res) {
 
 const actions = {
   //for testing only
-  // get: {
-  //   '/deliveries': getDeliveries
-  // },
-  post: {
-    // '/': postStatus,
+  get: {
     '/': getDeliveries
+  },
+  post: {
+    '/': postStatus,
   }
 };
 
