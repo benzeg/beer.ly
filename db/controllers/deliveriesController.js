@@ -1,7 +1,7 @@
 var db = require('../index.js');
 
 exports.saveDelivery = function(transaction, cb) {
-  var customer = transaction.username;
+  var username = transaction.username;
   var supplyAddresses = transaction.supplyAddresses;
   supplyAddresses = JSON.stringify(supplyAddresses);
   var deliveryAddress = transaction.deliveryAddress;
