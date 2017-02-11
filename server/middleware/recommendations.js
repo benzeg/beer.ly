@@ -23,6 +23,10 @@ exports.getRecommendedStyleIds = function(customer, cb) {
   	  var recommendedStyleIds = [];
       var counter = 0;
 
+      if (ratingsObj.count === 0) {
+        return [];
+      }
+      
   	  for (var styleId in ratingsObj) {
         if(styleId !== 'count') {
           counter++;
