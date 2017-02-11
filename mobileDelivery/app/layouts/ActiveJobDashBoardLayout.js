@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 
-import { Dimensions } from 'react-native';
+import { Dimensions, Linking } from 'react-native';
 import { ListItem } from 'react-native-material-ui';
+import { ActionButton } from 'react-native-material-ui';
+
 import MapView from 'react-native-maps';
 
 import Container from '../components/Container.js';
@@ -74,6 +76,10 @@ class ActiveJobDashBoardLayout extends React.Component {
     this.userLongitudeDelta = region.longitudeDelta;
   }
 
+  handlePhoneCustomer = () => {
+    Linking.openURL('tel:' + this.props.job.customerPhoneNumber);
+  }
+
   render() {
     return (
       <Container>
@@ -119,6 +125,8 @@ class ActiveJobDashBoardLayout extends React.Component {
           }}
           onPress={()=>this.props.onJobStatusUpdateClick(this.props.deliveryStatus)}
         />
+
+        <ActionButton icon="phone" onPress={this.handlePhoneCustomer} />
 
       </Container>
     );
