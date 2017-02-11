@@ -31,7 +31,7 @@ const postJob = function(req, res) {
           deliveryAddress: req.body.deliveryAddress
         };
 
-        Status.saveDeliveries(transaction, function(err, success) {
+        Status.saveDelivery(transaction, function(err, success) {
           if (err) {
             console.log('Could not save deliveries', err);
           } else {

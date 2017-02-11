@@ -10,7 +10,7 @@ exports.saveDelivery = function(transaction, cb) {
   db.Customers.findOne({where: {username: username}})
   .then(function(user) {
   	var customerId = user.id;
-  	db.Transactions.create(
+  	db.Deliveries.create(
   	{supplyAddresses: supplyAddresses,
   	 deliveryAddress: deliveryAddress,
 	 deliveryStatus: 'Finding Driver',
@@ -61,10 +61,11 @@ exports.updateDelivery = function(delivery, cb) {
 
 exports.getDelivery = function(driver, cb) {
   var username = driver.username;
+  console.log('WOPREWROPWEWEPROJRWE');
   db.Drivers.findOne({where: {username: username}})
   .then(function(user) {
   	var driverId = user.id;
-  	db.Deliveries.findOne({where: {deliveryStatus: 'Not assigned', driver: driverId}})
+  	db.Deliveries.findOne({where: {deliveryStatus: 'Finding Driver', driver: driverId}})
   	.then(function(delivery) {
   	  cb(null, [delivery]);
   	}).catch(function(err) {
