@@ -1,6 +1,6 @@
 import React from 'react';
 import App from '../App/App';
-import Home from '../Home/Home';
+// import Home from '../Home/Home';
 import City from '../City/City';
 import Brewery from '../Brewery/Brewery';
 import Checkout from '../Checkout/Checkout';
@@ -15,7 +15,7 @@ import { Route, IndexRoute } from 'react-router';
 
 module.exports = (
   <Route path="/" component={App}>
-    <IndexRoute component={Home} />
+    <IndexRoute component={Login} />
     <Route path="/signup" component={Signup} />
     <Route path="/login" component={Login} />
     <Route path="/checkout" component={Checkout} />
