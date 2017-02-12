@@ -36,6 +36,8 @@ class Login extends React.Component {
   }
 
   handleFormSubmit() {
+    const context = this;
+
     let userInformation = {};
 
     for (let field in this.formFields) {
@@ -51,8 +53,9 @@ class Login extends React.Component {
       }
     })
     .then((response) => {
-      console.log(response);
       if (response.status === 200) {      
+        context.clearCart();
+
         let data = response.data;
 
         for (let field in data) {
@@ -68,6 +71,12 @@ class Login extends React.Component {
       console.log('Error: ', thrown);
       // TODO: clear input fields
       browserHistory.push('/login');
+    });
+  }
+
+  clearCart() {
+    this.props.cart.forEach((beer, index) => {
+      this.props.removeFromCart(0);
     });
   }
 
