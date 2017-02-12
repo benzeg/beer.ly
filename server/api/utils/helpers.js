@@ -20,6 +20,11 @@ const createUrl = (api, queryOptions) => {
 };
 
 exports.fetch = (api, queryOptions) => {
+
+  // client components expect a breweries property on all beers
+  // to re-use greenfield fetch function, 
+  // the returned object will only be decorated if queryOptions
+  // is a string
   let decorator = false;
   let id;
   let url;
@@ -30,7 +35,7 @@ exports.fetch = (api, queryOptions) => {
   } else {
     url = createUrl(api, queryOptions);
   }
-  console.log('url', url);
+  
   return axios.get(url)
     .then((response) => {
       if (decorator) {

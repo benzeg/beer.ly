@@ -5,8 +5,6 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
 const Breweries = require('./../../../server/api/beers/beerController');
 
-// ///////ACTION HANDLERS//////// //
-
 const getStatus = function(req, res) {
   Status.getDeliveriesStatus(req.session.user, function(err, status) {
     if (err) {
@@ -14,7 +12,6 @@ const getStatus = function(req, res) {
       res.status(500);
       res.end();
     } else {
-      console.log('this is in status', status);
       console.log('statussss', status[0].dataValues);
       res.status(200).send(status[0].dataValues);
       res.end();
@@ -57,6 +54,8 @@ const postJob = function(req, res) {
   });
 };
 
+// ///////ACTION HANDLERS//////// //
+
 const actions = {
   get: {
     '/' : getStatus
@@ -65,7 +64,6 @@ const actions = {
     '/' : postJob
   }
 };
-
 
 exports.get = (req, res) => {
   actions.get[req.url](req, res);

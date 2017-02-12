@@ -5,8 +5,6 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config/apiKeys');
 
 const getDeliveries = function(req, res) {
-  // TODO: Function from db controller
-  console.log('DELIVERIES WOO');
   Driver.getDelivery(req.query, function(err, data) {
     if (err) {
       console.log('Could not retrieve deliveries', err);
@@ -23,7 +21,6 @@ const getDeliveries = function(req, res) {
 const postStatus = function(req, res) {
   Driver.updateDelivery(req.body, function(err, data) {
     if (data) {
-      console.log('This is the delivery object', data);
       res.status(201);
       res.end();
     } else {
@@ -34,17 +31,9 @@ const postStatus = function(req, res) {
   });
 };
 
-// const actions = {
-//   get: {
-//     '/*': getDeliveries
-//   },
-//   post: {
-//     '/*': postStatus,
-//   }
-// };
+// ///////ACTION HANDLERS//////// //
 
 exports.get = (req, res) => {
-  console.log('aewhflew', req.url);
   getDeliveries(req, res);
 };
 

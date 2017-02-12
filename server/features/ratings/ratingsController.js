@@ -17,7 +17,7 @@ const getRatings = function(req, res) {
           console.log('Not able to return beer array of objects', err);
         } else {
           res.status(200).send(beerObj);
-          res.end();   
+          res.end();  
         }
       });
     }
