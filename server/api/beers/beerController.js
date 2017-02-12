@@ -73,6 +73,7 @@ exports.fetchBeersByStyleId = function(styleId) {
   return utils.fetch(api, queryOptions);
 };
 
+//fetchBeersByIds, and decorate them with user ratings
 exports.fetchBeersByIds = function(beerArray, cb) {
 
   const api = {
@@ -87,6 +88,7 @@ exports.fetchBeersByIds = function(beerArray, cb) {
   // save object of beers containing ratings based on ids
   let beerObj = {};
 
+  // ensures all beers have been added to listBeers before calling fetchBeer
   let createStringCount = 0;
 
   beerArray.forEach(function(beer) {
@@ -96,7 +98,8 @@ exports.fetchBeersByIds = function(beerArray, cb) {
   });
 
   if (createStringCount === beerArray.length) {
-    // create string
+
+    // create string for query options
     listBeers = listBeers.join(',');
 
     const queryOptions = {
@@ -124,7 +127,6 @@ exports.fetchBeersByIds = function(beerArray, cb) {
     });
   }
 };
-
 
 exports.get = (req, res) => {
   const name = req.params.brewery;

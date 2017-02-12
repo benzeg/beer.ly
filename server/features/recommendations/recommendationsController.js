@@ -10,23 +10,11 @@ const getRecommendation = function(req, res) {
     if (err) {
       console.log('Could not get user recommendations', err);
     } else {
-      console.log(recommendArray);
       res.status(200).send(recommendArray);
       res.end();
     }
   });
 };
-
-// ///////ACTION HANDLERS//////// //
-
-// const actions = {
-//   //post for testing
-//   //change to get later
-//   post: {
-//     '/' : getRecommendation
-//   }
-// };
-
 
 exports.get = (req, res) => {
   getRecommendation(req, res);
