@@ -23,6 +23,7 @@ const getDeliveries = function(req, res) {
 const postStatus = function(req, res) {
   Driver.updateDelivery(req.body, function(err, data) {
     if (data) {
+      console.log('This is the delivery object', data);
       res.status(201);
       res.end();
     } else {

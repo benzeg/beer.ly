@@ -57,8 +57,8 @@ var Deliveries = db.define('Deliveries', {
   supplyAddresses: Sequelize.TEXT,
   deliveryAddress: Sequelize.STRING,
   deliveryStatus: Sequelize.STRING,
-  longitude: Sequelize.DECIMAL,
-  latitude: Sequelize.DECIMAL,
+  longitude: Sequelize.DECIMAL(18,9),
+  latitude: Sequelize.DECIMAL(18,9),
   deliveryTime: Sequelize.DATE
 });
 

@@ -14,6 +14,7 @@ const getStatus = function(req, res) {
       res.status(500);
       res.end();
     } else {
+      console.log('this is in status', status);
       console.log('statussss', status[0].dataValues);
       res.status(200).send(status[0].dataValues);
       res.end();

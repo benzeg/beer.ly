@@ -72,7 +72,7 @@ exports.randomize = function(beerArray) {
   var counter = 0;
   var newbeerArray = [];
   var newbeerCheck = {};
-  while (counter < 5) {
+  while (counter < 6) {
   	var index = Math.floor(Math.random() * (beerArray.length - 1));
   	if (newbeerCheck[index] === undefined) {
   	  newbeerArray.push(beerArray[index]);
